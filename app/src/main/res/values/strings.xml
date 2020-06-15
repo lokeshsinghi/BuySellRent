@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BuySellRent</string>
+    <string name="title_activity_start_screen">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_ads">Ads</string>
+    <string name="title_sell">Sell</string>
 </resources>
