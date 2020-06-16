@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "455473712197",
+    "firebase_url": "https://buysellrent-37ba8.firebaseio.com",
+    "project_id": "buysellrent-37ba8",
+    "storage_bucket": "buysellrent-37ba8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455473712197:android:883f2fac323180389b672c",
+        "android_client_info": {
+          "package_name": "com.example.buysellrent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455473712197-u4hl73684g994r1vrcfq88v0jnai90jj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.buysellrent",
+            "certificate_hash": "b11ece1977197efd4f4ad1e2b71add64fd9febe0"
+          }
+        },
+        {
+          "client_id": "455473712197-plvjek4abqcu7pfdhkqbum3fcgkjhfgi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA87HUZq5r4D2-yCFPiRKwyLa-mb2fciM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455473712197-plvjek4abqcu7pfdhkqbum3fcgkjhfgi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
