@@ -12,6 +12,9 @@ public class User {
         this.default_dp = true;
         this.verifiedEmail = false;
     }
+    public User() {
+
+    }
 
     public String getFullName() {
         return fullName;

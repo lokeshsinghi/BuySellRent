@@ -27,4 +27,5 @@
     <string name="forgot"><u>Forgot password?</u></string>
     <string name="createNew">Create a New Account</string>
     <string name="invalid">Invalid UserName or PassWord</string>
+    <string name="error">Error</string>
 </resources>
