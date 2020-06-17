@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="#000000"
-        android:text="@string/sell"
+        android:text="sell"
         android:textSize="25sp"/>
 
 </FrameLayout>
