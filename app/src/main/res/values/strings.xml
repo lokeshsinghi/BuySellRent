@@ -19,7 +19,7 @@
     <string name="resend">Resend OTP</string>
     <string name="receive">"Didn't receive OTP?"</string>
     <string name="otp">Enter One Time Password (OTP)</string>
-    <string name="pass">PassWord</string>
+    <string name="pass">Password</string>
     <string name="repeatPass">Repeat Password</string>
     <string name="fullName">Full Name</string>
     <string name="typeEmail">Email Address</string>
@@ -27,6 +27,6 @@
     <string name="login">Login</string>
     <string name="forgot"><u>Forgot password?</u></string>
     <string name="createNew">Create a New Account</string>
-    <string name="invalid">Invalid UserName or PassWord</string>
+    <string name="invalid">Invalid UserName or Password</string>
     <string name="error">Error</string>
 </resources>

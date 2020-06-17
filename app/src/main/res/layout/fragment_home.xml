@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffff"
+        android:background="#FFFF"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="wrap_content"
@@ -49,16 +49,13 @@
         android:id="@+id/location"
         android:orientation="horizontal"
         android:clickable="true">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/location_icon"
-            android:clickable="false">
-        </ImageView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:id="@+id/curLoc"
+            android:maxLines="1"
+            android:drawableLeft="@drawable/location_icon"
             android:layout_marginLeft="10dp"
             android:text="Your location"
             android:clickable="false"></TextView>

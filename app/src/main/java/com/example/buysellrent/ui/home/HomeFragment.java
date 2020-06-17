@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,12 +16,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.buysellrent.R;
 import com.example.buysellrent.Adapters.RecyclerViewAdapter;
+import com.example.buysellrent.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
+
+import static com.example.buysellrent.startScreen.newLocation;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -29,14 +31,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final int ERROR_DIALOG_REQUEST =9001;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
-
+    private TextView locationText;
     RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = root.findViewById(R.id.recyclerView);
+        locationText = root.findViewById(R.id.curLoc);
+        locationText.setText(newLocation);
         getImages();
         if(isServiceOK())
         {
