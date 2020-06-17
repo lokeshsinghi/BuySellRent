@@ -6,6 +6,7 @@
     <string name="title_settings">Settings</string>
     <string name="title_ads">Ads</string>
     <string name="title_sell">Sell</string>
+    <string name="google_maps_API_key">AIzaSyA7Jquoe7kJ5ZkCC9csaesYNd_eqlk9z7w</string>
     <string name="login_phone">Continue with Phone</string>
     <string name="login_google">Continue with Google</string>
     <string name="login_facebook">Continue with Facebook</string>
