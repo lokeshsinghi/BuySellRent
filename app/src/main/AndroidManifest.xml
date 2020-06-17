@@ -22,6 +22,8 @@
             android:value="@string/map_key" />
         <activity android:name=".ui.home.selectLocation"></activity>
         <activity android:name=".SignIn.EmailSignUp"></activity>
+        <activity android:name=".ui.chat.MessageActivity"></activity>
+        <activity android:name=".SignIn.EmailSignUp" />
         <activity android:name=".SignIn.EmailSignIn" />
         <activity android:name=".SignIn.OtpVerification" />
         <activity android:name=".SignIn.PhoneSignIn" />
