@@ -1,4 +1,7 @@
 <resources>
+    <string name="facebook_app_id">3040495185997525</string>
+    <string name="fb_login_protocol_scheme">fb3040495185997525</string>
+
     <string name="app_name">BuySellRent</string>
     <string name="title_activity_start_screen">MainActivity</string>
     <string name="title_home">Home</string>
@@ -6,7 +9,6 @@
     <string name="title_settings">Settings</string>
     <string name="title_ads">Ads</string>
     <string name="title_sell">Sell</string>
-    <string name="google_maps_API_key">AIzaSyA7Jquoe7kJ5ZkCC9csaesYNd_eqlk9z7w</string>
     <string name="login_phone">Continue with Phone</string>
     <string name="login_google">Continue with Google</string>
     <string name="login_facebook">Continue with Facebook</string>
@@ -19,7 +21,7 @@
     <string name="resend">Resend OTP</string>
     <string name="receive">"Didn't receive OTP?"</string>
     <string name="otp">Enter One Time Password (OTP)</string>
-    <string name="pass">Password</string>
+    <string name="pass">PassWord</string>
     <string name="repeatPass">Repeat Password</string>
     <string name="fullName">Full Name</string>
     <string name="typeEmail">Email Address</string>
@@ -27,6 +29,8 @@
     <string name="login">Login</string>
     <string name="forgot"><u>Forgot password?</u></string>
     <string name="createNew">Create a New Account</string>
-    <string name="invalid">Invalid UserName or Password</string>
+    <string name="invalid">Invalid UserName or PassWord</string>
+    <string name="signOut">Sign Out</string>
+    <string name="load">Loading...</string>
     <string name="error">Error</string>
 </resources>

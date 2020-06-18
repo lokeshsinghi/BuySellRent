@@ -15,6 +15,14 @@ public class User {
     public User() {
 
     }
+    public User(String fullName, String email, String id, String imageUrl) {
+        this.fullName = fullName;
+        this.email = email;
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.default_dp = false;
+        this.verifiedEmail = true;
+    }
 
     public String getFullName() {
         return fullName;

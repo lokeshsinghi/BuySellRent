@@ -70,6 +70,7 @@ public class OtpVerification extends AppCompatActivity {
 
     private void verifyCode(String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode, code);
+        editText.setText(code);
         signIn(credential);
     }
 
@@ -120,7 +121,7 @@ public class OtpVerification extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(OtpVerification.this, e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(OtpVerification.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
 }

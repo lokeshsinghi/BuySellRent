@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.buysellrent.Class.ProgressBar;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.example.buysellrent.startScreen;
@@ -33,7 +34,7 @@ public class EmailSignUp extends AppCompatActivity {
     Button signUp;
     FirebaseAuth mAuth;
     String fullName, password, rPassword, mail;
-    ProgressDialog pd;
+    ProgressBar pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +47,10 @@ public class EmailSignUp extends AppCompatActivity {
         email = findViewById(R.id.email);
         signUp = findViewById(R.id.signUp);
         mAuth = FirebaseAuth.getInstance();
-        pd = new ProgressDialog(EmailSignUp.this, R.style.MyTheme);
-        pd.setCancelable(false);
-        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        pd = new ProgressBar(EmailSignUp.this);
 
+
+        //Email and password signUp
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,23 +82,23 @@ public class EmailSignUp extends AppCompatActivity {
                     pass.setError("Enter a combination of atleast 6 letters");
                 }
                 else {
-                    pd.show();
+                    pd.loadDialog();
                     mAuth.createUserWithEmailAndPassword(mail, password)
                             .addOnCompleteListener(EmailSignUp.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                    pd.dismissDialog();
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         //Log.d(TAG, "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         updateUI(user);
-                                        pd.dismiss();
                                         Intent intent = new Intent(EmailSignUp.this, startScreen.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Log.w("Signin Failed", "createUserWithEmail:failure", task.getException());
+                                        Log.w("SignIn Failed", "createUserWithEmail:failure", task.getException());
                                         Toast.makeText(EmailSignUp.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
                                         updateUI(null);
@@ -108,6 +109,7 @@ public class EmailSignUp extends AppCompatActivity {
             }
         });
     }
+
     public static boolean isValidEmail(CharSequence target) {
         if (target == null) {
             return false;
@@ -115,6 +117,7 @@ public class EmailSignUp extends AppCompatActivity {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
+
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             String fullName, mail;
