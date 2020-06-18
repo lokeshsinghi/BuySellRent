@@ -9,8 +9,6 @@
     android:orientation="vertical">
 
 
-
-
     <com.google.android.material.tabs.TabLayout
 
         android:id="@+id/chat_tab"
@@ -18,27 +16,17 @@
         android:layout_height="wrap_content"
 
         android:background="#FFFFFF"
-        app:layout_scrollFlags="scroll"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:clickable="true"
+        android:focusable="true"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
 
+        app:layout_scrollFlags="scroll"
         app:tabIndicator="@color/colorPrimaryDark"
-        app:tabIndicatorColor="#f00000"
-        app:tabSelectedTextColor="@color/colorPrimaryDark"
+        app:tabIndicatorColor="#FFFF"
 
 
-
-
-        app:tabTextColor="#000000"
-        android:focusable="true" />
-
-
-
-
-
-
-
-
+        app:tabSelectedTextColor="@color/textPrimary"
+        app:tabTextColor="@color/quantum_grey" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/chat_view"
