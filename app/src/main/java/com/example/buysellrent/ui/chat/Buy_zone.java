@@ -44,18 +44,18 @@ public class Buy_zone extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-       View view =inflater.inflate(R.layout.fragment_buy_zone, container, false);
-       recyclerView=view.findViewById(R.id.buy_view);
+
+        View view =inflater.inflate(R.layout.fragment_buy_zone, container, false);
+        recyclerView=view.findViewById(R.id.buy_view);
         progressBar =view.findViewById(R.id.pBar);
         progressBar.setVisibility(View.VISIBLE);
-       recyclerView.setHasFixedSize(true);
-       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-       mUsers=new ArrayList<>();
-       readUsers();
-       return view;
+        mUsers=new ArrayList<>();
+        readUsers();
+        return view;
     }
 
     private void readUsers() {
@@ -67,13 +67,13 @@ public class Buy_zone extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                        User user=snapshot.getValue(User.class);
-                        assert user!=null;
-                        assert firebaseUser!=null;
+                    User user=snapshot.getValue(User.class);
+                    assert user!=null;
+                    assert firebaseUser!=null;
 
-                        if(!user.getId().equals(firebaseUser.getUid())){
-                            mUsers.add(user);
-                        }
+                    if(!user.getId().equals(firebaseUser.getUid())){
+                        mUsers.add(user);
+                    }
                 }
                 progressBar.setVisibility(View.GONE);
                 userAdapter=new UserAdapter(getContext(),mUsers);

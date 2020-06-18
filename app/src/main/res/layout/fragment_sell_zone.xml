@@ -1,22 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.chat.Sell_zone">
 
-    <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@drawable/secondhalf" />
-    <TextView
+        android:src="@drawable/secondhalf"
+        android:contentDescription="nothing" />
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:text="Filters   "
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sell_rent"
+                android:text="Only Rent"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:id="@+id/sell_sell"
+                android:text="Only Buy"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:id="@+id/sell_none"
+                android:text="None"
+                android:textSize="10sp"
+                tools:ignore="HardcodedText,SmallSp" />
+        </RadioGroup>
+
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pBar2"
+        style="@android:style/Animation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="#000000"
-        android:text="sell"
-        android:textSize="25sp"/>
+        android:minWidth="50dp"
+        android:minHeight="50dp"
+        android:visibility="invisible"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:id="@+id/sell_view"/>
+
+
+
+
+</LinearLayout>

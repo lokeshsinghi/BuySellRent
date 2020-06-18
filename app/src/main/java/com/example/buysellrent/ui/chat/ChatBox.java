@@ -1,5 +1,7 @@
 package com.example.buysellrent.ui.chat;
 
+import com.example.buysellrent.Class.User;
+
 public class ChatBox {
 
     private String sender;
@@ -10,6 +12,9 @@ public class ChatBox {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+    }
+    public ChatBox(){
+
     }
 
     public String getSender() {
@@ -36,7 +41,5 @@ public class ChatBox {
         this.message = message;
     }
 
-    public ChatBox(){
 
-    }
 }
