@@ -1,4 +1,4 @@
-package com.example.buysellrent.ui.ads;
+package com.example.buysellrent.ui.myAds;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

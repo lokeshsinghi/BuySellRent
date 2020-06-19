@@ -34,10 +34,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,11 +80,6 @@ public class selectLocation extends AppCompatActivity implements OnMapReadyCallb
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 18;
-    private PlacesClient placesClient;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40, -168), new LatLng(71, 136));
-
-
     private Button confirmLocation;
     //widgets
     private AutoCompleteTextView mSearchText;
@@ -115,8 +108,6 @@ public class selectLocation extends AppCompatActivity implements OnMapReadyCallb
         confirmLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TextView curLoc = (TextView) findViewById(R.id.curLoc);
-//                curLoc.setText(txtLocationAddress.getText());
                 Intent intent = new Intent(selectLocation.this, startScreen.class);
                 intent.putExtra("location",address);
                 startActivity(intent);

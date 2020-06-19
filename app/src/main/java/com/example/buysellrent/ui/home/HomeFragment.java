@@ -1,8 +1,14 @@
 package com.example.buysellrent.ui.home;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,20 +27,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buysellrent.Adapters.RecyclerAdsAdapter;
 import com.example.buysellrent.Adapters.RecyclerViewAdapter;
 import com.example.buysellrent.R;
+import com.example.buysellrent.ui.home.Ads.AdDetails;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static com.example.buysellrent.startScreen.newLocation;
-
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "Explore";
-    private static final int ERROR_DIALOG_REQUEST =9001;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+    private Boolean mLocationPermissionsGranted = false;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private TextView locationText;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Location currentLocation;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     RecyclerView recyclerView;
     RecyclerView recyclerAds;
 
@@ -41,13 +62,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerAds = root.findViewById(R.id.recyclerAds);
-        locationText = root.findViewById(R.id.curLoc);
+
+        recyclerAds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeFragment.this.getActivity(), AdDetails.class);
+                startActivity(intent);
+            }
+        });
+
+        locationText = (TextView) root.findViewById(R.id.curLoc);
         locationText.setText(newLocation);
+        if(TextUtils.isEmpty(newLocation)){
+            getLocationPermission();
+            displayLocation();}
         getImages();
         getAds();
-        if(isServiceOK())
-        {
-            LinearLayout location =(LinearLayout) root.findViewById(R.id.location);
+        if (isServiceOK()) {
+            LinearLayout location = (LinearLayout) root.findViewById(R.id.location);
             location.setOnClickListener(this);
         }
         return root;
@@ -151,30 +183,107 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public boolean isServiceOK(){
-        Log.d(TAG,"isServiceOK: checking google services version");
+    public boolean isServiceOK() {
+        Log.d(TAG, "isServiceOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(HomeFragment.this.getActivity());
-        if(available== ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //play services is working
-            Log.d(TAG,"isServiceOK: Google Play Services is working");
+            Log.d(TAG, "isServiceOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error can be resolved
             Log.d(TAG, "can fix");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HomeFragment.this.getActivity(), available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }
-        else {
+        } else {
             Toast.makeText(this.getActivity(), "You can't select location", Toast.LENGTH_SHORT).show();
 
-        }return false;
+        }
+        return false;
     }
 
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(HomeFragment.this.getActivity(), selectLocation.class);
         startActivity(intent);
+
     }
+
+
+    private void getLocationPermission() {
+        Log.d(TAG, "getLocationPermission: getting location permissions");
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(this.getActivity().getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getActivity().getApplicationContext(),
+                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionsGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(this.getActivity(),
+                        permissions,
+                        LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this.getActivity(),
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    public void displayLocation() {
+        if (mLocationPermissionsGranted) {
+            getDeviceLocation();
+            if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+        }
+    }
+
+    private void getDeviceLocation() {
+        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+        try {
+            if (mLocationPermissionsGranted) {
+                final Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: found location!");
+                            currentLocation = (Location) task.getResult();
+                            getAddressFromLocation(currentLocation.getLatitude(),currentLocation.getLongitude());
+                        } else {
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(HomeFragment.this.getActivity(), "unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
+        }
+    }
+
+    private void getAddressFromLocation(double latitude, double longitude) {
+
+        Geocoder geocoder = new Geocoder(this.getActivity(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+            if (addresses.size() > 0) {
+                locationText.setText(addresses.get(0).getAddressLine(0));
+            } else {
+                locationText.setText("Searching Current Address");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

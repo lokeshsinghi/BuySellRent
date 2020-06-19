@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.buysellrent.R;
-import com.example.buysellrent.ui.ads.AdsViewModel;
 
 public class SellFragment extends Fragment {
     private SellViewModel sellViewModel;
