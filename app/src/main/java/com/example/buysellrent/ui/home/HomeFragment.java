@@ -18,11 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buysellrent.Adapters.RecyclerAdsAdapter;
 import com.example.buysellrent.Adapters.RecyclerViewAdapter;
+import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.buysellrent.startScreen.newLocation;
 
@@ -35,6 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView locationText;
     RecyclerView recyclerView;
     RecyclerView recyclerAds;
+    FirebaseDatabase databaseReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +55,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerAds = root.findViewById(R.id.recyclerAds);
         locationText = root.findViewById(R.id.curLoc);
         locationText.setText(newLocation);
+        databaseReference=FirebaseDatabase.getInstance();
+
+        manageConnections();
+
         getImages();
         getAds();
         if(isServiceOK())
@@ -177,4 +193,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent(HomeFragment.this.getActivity(), selectLocation.class);
         startActivity(intent);
     }
+
+    private void manageConnections(){
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        final DatabaseReference connectionReference=FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("status");
+        final DatabaseReference lastConnected=FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("lastConnected");
+        final DatabaseReference infoConnected=databaseReference.getReference(".info/connected");
+
+        infoConnected.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean connected=dataSnapshot.getValue(Boolean.class);
+
+                DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("status");
+                DatabaseReference databaseReference2=FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("lastConnected");
+
+                if(connected){
+                    databaseReference.setValue("online");
+
+                    lastConnected.onDisconnect().setValue(ServerValue.TIMESTAMP);
+                    databaseReference.onDisconnect().setValue("offline");
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("Error"+databaseError);
+            }
+        });
+
+    }
+
+
+
 }

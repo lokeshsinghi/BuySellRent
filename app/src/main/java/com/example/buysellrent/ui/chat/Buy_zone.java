@@ -76,7 +76,7 @@ public class Buy_zone extends Fragment {
                     }
                 }
                 progressBar.setVisibility(View.GONE);
-                userAdapter=new UserAdapter(getContext(),mUsers);
+                userAdapter=new UserAdapter(getContext(),mUsers,true);
                 recyclerView.setAdapter(userAdapter);
             }
 
