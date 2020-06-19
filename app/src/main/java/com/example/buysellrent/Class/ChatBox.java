@@ -1,4 +1,4 @@
-package com.example.buysellrent.ui.chat;
+package com.example.buysellrent.Class;
 
 import com.example.buysellrent.Class.User;
 
@@ -7,11 +7,13 @@ public class ChatBox {
     private String sender;
     private String receiver;
     private String message;
+    private boolean isseen;
 
-    public ChatBox(String sender, String receiver, String message) {
+    public ChatBox(String sender, String receiver, String message,boolean isseen) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.isseen=isseen;
     }
     public ChatBox(){
 
@@ -41,5 +43,11 @@ public class ChatBox {
         this.message = message;
     }
 
+    public boolean isIsseen() {
+        return isseen;
+    }
 
+    public void setIsseen(boolean isseen) {
+        this.isseen = isseen;
+    }
 }

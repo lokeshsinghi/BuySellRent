@@ -5,30 +5,41 @@
     android:padding="8dp"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:orientation="vertical">
         <TextView
             android:id="@+id/show_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+
             android:background="@drawable/background_right"
             android:padding="8dp"
             android:text="hello"
             android:textColor="#ffff"
             android:textSize="18sp" />
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/seen"
+            android:text="seen"
+            android:textSize="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/show_message"
+            android:layout_gravity="end"/>
+
+</LinearLayout>
 
 </RelativeLayout>

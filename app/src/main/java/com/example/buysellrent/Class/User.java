@@ -1,8 +1,12 @@
 package com.example.buysellrent.Class;
 
+
+
 public class User {
-    private  String fullName, email, imageUrl, id;
+    private  String fullName, email, imageUrl, id,status;
+
     private boolean verifiedEmail, default_dp;
+
 
     public User(String fullName, String email, String id) {
         this.fullName = fullName;
@@ -10,7 +14,11 @@ public class User {
         this.id = id;
         this.imageUrl = "";
         this.default_dp = true;
+        this.status="online";
         this.verifiedEmail = false;
+
+        //this.lastConnected=now;
+
     }
     public User() {
 
@@ -22,6 +30,16 @@ public class User {
         this.imageUrl = imageUrl;
         this.default_dp = false;
         this.verifiedEmail = true;
+    }
+
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getFullName() {
@@ -63,4 +81,6 @@ public class User {
     public boolean isDefault_dp() { return default_dp; }
 
     public void setDefault_dp(boolean default_dp) { this.default_dp = default_dp; }
+
+
 }

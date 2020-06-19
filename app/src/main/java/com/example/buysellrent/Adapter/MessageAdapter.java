@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buysellrent.R;
-import com.example.buysellrent.ui.chat.ChatBox;
-import com.example.buysellrent.ui.chat.MessageActivity;
+import com.example.buysellrent.Class.ChatBox;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -56,7 +55,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 holder.profilepic.setImageResource(R.drawable.logo_temp);
             }
             else{
-                Glide.with(mcontext).load(imageurl).into(holder.profilepic);}
+                Glide.with(mcontext).load(imageurl).into(holder.profilepic);
+            }
+            if(position==mchat.size()-1) {
+                if (chatBox.isIsseen()) {
+                    holder.text_seen.setText("seen");
+                } else {
+                    holder.text_seen.setText("sent");
+                }
+            }
+            else{
+                holder.text_seen.setVisibility(View.GONE);
+            }
+
 
     }
 
@@ -69,12 +80,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
         public ImageView profilepic;
+        public TextView text_seen;
 
         public ViewHolder(View itemView){
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
             profilepic = itemView.findViewById(R.id.chat_dp);
+            text_seen=itemView.findViewById(R.id.seen);
         }
     }
 

@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.buysellrent.Adapter.UserAdapter;
+import com.example.buysellrent.Class.ChatBox;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static com.example.buysellrent.R.string.error;
 
 
 public class Sell_zone extends Fragment {
@@ -126,7 +124,7 @@ public class Sell_zone extends Fragment {
                     mmm.add(user);
                 }
                 progressBar.setVisibility(View.GONE);
-                userAdapter=new UserAdapter(getContext(),mmm);
+                userAdapter=new UserAdapter(getContext(),mmm,true);
                 recyclerView.setAdapter(userAdapter);
             }
 

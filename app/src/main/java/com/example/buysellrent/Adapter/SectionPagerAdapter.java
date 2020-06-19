@@ -1,4 +1,4 @@
-package com.example.buysellrent.Adapters;
+package com.example.buysellrent.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SectionPagerAdapter extends FragmentPagerAdapter {
 
@@ -38,4 +42,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
         titles.add(title);
 
     }
+
+
+
 }
