@@ -1,16 +1,16 @@
 package com.example.buysellrent.ui.chat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.buysellrent.Adapter.MessageAdapter;
@@ -23,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -31,25 +30,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageActivity extends AppCompatActivity {
 
-    CircleImageView dp;
-    TextView name;
-    TextView status;
-    FirebaseUser firebaseUser;
-    DatabaseReference databaseReference;
-    EditText message;
-    ImageView send;
-    MessageAdapter messageAdapter;
-    List<ChatBox> mchat;
-    RecyclerView recyclerView;
-    String userid,type;
-    ValueEventListener seenListener;
-    ValueEventListener statusListener;
+    private CircleImageView dp;
+    private TextView name;
+    private TextView status;
+    private FirebaseUser firebaseUser;
+    private EditText message;
+    private MessageAdapter messageAdapter;
+    private List<ChatBox> chatBoxList;
+    private RecyclerView recyclerView;
+    private String userid;
 
 
     @Override
@@ -62,7 +58,7 @@ public class MessageActivity extends AppCompatActivity {
         name = findViewById(R.id.chat_name);
         status = findViewById(R.id.status);
         message = findViewById(R.id.chat_message);
-        send = findViewById(R.id.send_chat);
+        ImageView ivSend = findViewById(R.id.send_chat);
 
         recyclerView = findViewById(R.id.message_recycler);
         recyclerView.setHasFixedSize(true);
@@ -71,14 +67,12 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         userid = getIntent().getStringExtra("userid");
-        type = getIntent().getStringExtra("type");
+       // String type = getIntent().getStringExtra("type");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-
-
-        send.setOnClickListener(new View.OnClickListener() {
+        ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = message.getText().toString();
@@ -95,16 +89,7 @@ public class MessageActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user =dataSnapshot.getValue(User.class);
-
-                name.setText(user.getFullName());
-                if(user.getImageUrl().equals("")){
-                    dp.setImageResource(R.drawable.logo_temp);
-                }
-                else{
-                    Glide.with(getApplicationContext()).load(user.getImageUrl()).into(dp);
-                }
-                readMessage(firebaseUser.getUid(),userid,user.getImageUrl());
+                setStatus(dataSnapshot);
             }
 
             @Override
@@ -113,104 +98,55 @@ public class MessageActivity extends AppCompatActivity {
             }
 
         });
-
-
-        setStatus(userid);
         seenMessage(userid);
-
-
     }
 
+    private void setStatus(DataSnapshot dataSnapshot){
+        User user =dataSnapshot.getValue(User.class);
 
-    private void setStatus(final String uid)
-    {
-        databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(uid).child("status");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String temp=dataSnapshot.getValue(String.class);
-                if(temp.equals("online"))
-                {
-                    status.setText("online");
-                }
-                else{/*
-                    databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(uid).child("lastConnected");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Map<String,String> last= (Map<String, String>) dataSnapshot.getValue();
-                            if(last.equals(0))
-                            {
-                                status.setText("Last seen: "+never"");
-                            }
-                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
-                                String time=simpleDateFormat.format(last);
-                                status.setText("Last seen: "+time);
+        if (user != null) {
+            name.setText(user.getFullName());
 
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(),"ERROR"+databaseError,Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-                */
-                    databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(uid);
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //HashMap<String,String > map=new HashMap<>();
-                            String time=dataSnapshot.child("lastConnected").getValue().toString();
-                            Long temp=Long.parseLong(time);
-
-                            Calendar smsTime = Calendar.getInstance();
-                            smsTime.setTimeInMillis(temp);
-
-                            Calendar now=Calendar.getInstance();
-
-                            if (now.get(Calendar.DATE) == smsTime.get(Calendar.DATE)){
-                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
-                                String timef=simpleDateFormat.format(temp);
-                                status.setText("Last seen: "+timef);
-                            }
-                            else
-                            {
-                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MMM hh:mm a");
-                                String timef=simpleDateFormat.format(temp);
-                                status.setText("Last seen: "+timef);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                status.setText(ServerValue.TIMESTAMP.toString());}
+            if (user.getImageUrl().equals("")) {
+                dp.setImageResource(R.drawable.logo_temp);
+            } else {
+                Glide.with(getApplicationContext()).load(user.getImageUrl()).into(dp);
             }
+            readMessage(firebaseUser.getUid(), userid, user.getImageUrl());
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(),"ERROR"+databaseError,Toast.LENGTH_SHORT).show();
+        if(Objects.equals(dataSnapshot.child("status").getValue(), "online")) {
+            status.setText(R.string.online);
+        }else{
+            String timeValue = Objects.requireNonNull(dataSnapshot.child("lastConnected").getValue()).toString();
+            long temp=Long.parseLong(timeValue);
+
+            Calendar smsTime = Calendar.getInstance();
+            smsTime.setTimeInMillis(temp);
+            Calendar now=Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat;
+            if (now.get(Calendar.DATE) == smsTime.get(Calendar.DATE)){
+                 simpleDateFormat=new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            } else {
+                 simpleDateFormat=new SimpleDateFormat("dd-MMM hh:mm a", Locale.getDefault());
             }
-        });
+            String time = getString(R.string.last_seen)+" "+simpleDateFormat.format(temp);
+            status.setText(time);
+        }
     }
+
     private void seenMessage(final String userid){
-        databaseReference=FirebaseDatabase.getInstance().getReference("Chats");
-        seenListener=databaseReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Chats");
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    ChatBox chatBox=snapshot.getValue(ChatBox.class);
-                    if(chatBox.getReceiver().equals(firebaseUser.getUid())&& chatBox.getSender().equals(userid)){
-                        HashMap<String,Object> hashMap=new HashMap<>();
-                        hashMap.put("isseen",true);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ChatBox chatBox = snapshot.getValue(ChatBox.class);
+                    assert chatBox != null;
+                    if (chatBox.getReceiver().equals(firebaseUser.getUid()) && chatBox.getSender().equals(userid)) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
-
 
 
                     }
@@ -274,21 +210,20 @@ public class MessageActivity extends AppCompatActivity {
 
     private void readMessage(final String myid, final String userid, final String imageurl){
 
-      /*  if(imageurl.equals(""))
-            imageurl=findViewById(R.drawable.logo_temp);*/
-        mchat = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
+        chatBoxList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mchat.clear();
+                chatBoxList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ChatBox chatBox = snapshot.getValue(ChatBox.class);
+                    assert chatBox != null;
                     if(chatBox.getReceiver().equals(myid) && chatBox.getSender().equals(userid) ||
                             chatBox.getReceiver().equals(userid) && chatBox.getSender().equals(myid)){
-                        mchat.add(chatBox);
+                        chatBoxList.add(chatBox);
                     }
-                    messageAdapter = new MessageAdapter(MessageActivity.this,mchat,imageurl);
+                    messageAdapter = new MessageAdapter(MessageActivity.this, chatBoxList,imageurl);
                     recyclerView.setAdapter(messageAdapter);
                 }
             }
@@ -299,27 +234,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
-  /*  private void status(String status){
-        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put("status",status);
-        databaseReference.updateChildren(hashMap);
-    }*/
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-        databaseReference.removeEventListener(seenListener);
 
 
-    }
 
 }

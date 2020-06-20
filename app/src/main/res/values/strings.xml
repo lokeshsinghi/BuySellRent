@@ -33,4 +33,6 @@
     <string name="signOut">Sign Out</string>
     <string name="load">Loading...</string>
     <string name="error">Error</string>
+    <string name="online">online</string>
+    <string name="last_seen">Last seen: </string>
 </resources>
