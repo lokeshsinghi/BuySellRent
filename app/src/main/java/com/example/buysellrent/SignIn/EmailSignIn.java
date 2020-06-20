@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.EmbossMaskFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buysellrent.Class.CustomProgressBar;
 import com.example.buysellrent.R;
 import com.example.buysellrent.startScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +27,7 @@ public class EmailSignIn extends AppCompatActivity {
     TextView createNew, forgot, warning;
     EditText email, pass;
     FirebaseAuth mAuth;
+    CustomProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class EmailSignIn extends AppCompatActivity {
         pass = findViewById(R.id.editPassword);
         mAuth = FirebaseAuth.getInstance();
         warning = findViewById(R.id.invalid);
+        progressBar = new CustomProgressBar(EmailSignIn.this);
 
         createNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +63,7 @@ public class EmailSignIn extends AppCompatActivity {
                     pass.setError("This field cannot be empty.");
                 }
                 else {
+                    progressBar.loadDialog();
                     mAuth.signInWithEmailAndPassword(userEmail, password)
                             .addOnCompleteListener(EmailSignIn.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -68,8 +73,9 @@ public class EmailSignIn extends AppCompatActivity {
                                         updateUI(user);
                                     }
                                     else {
+                                        progressBar.dismissDialog();
                                         updateUI(null);
-//                                        Toast.makeText(EmailSignIn.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EmailSignIn.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -88,10 +94,11 @@ public class EmailSignIn extends AppCompatActivity {
 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(EmailSignIn.this, startScreen.class);
+            Intent intent = new Intent(EmailSignIn.this, EmailVerification.class);
+            intent.putExtra("Email", user.getEmail());
             startActivity(intent);
         } else {
-                warning.setVisibility(View.VISIBLE);
+//                warning.setVisibility(View.VISIBLE);
         }
     }
 }

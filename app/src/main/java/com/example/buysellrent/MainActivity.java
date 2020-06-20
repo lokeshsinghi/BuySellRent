@@ -5,25 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.buysellrent.Class.ProgressBar;
+import com.example.buysellrent.Class.CustomProgressBar;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.SignIn.EmailSignIn;
-import com.example.buysellrent.SignIn.EmailSignUp;
+import com.example.buysellrent.SignIn.EmailVerification;
 import com.example.buysellrent.SignIn.PhoneSignIn;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.suggestedevents.ViewOnClickListener;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -34,10 +30,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,7 +40,6 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private int RC_SIGN_IN = 1;
     private CallbackManager callbackManager;
-    ProgressBar progressBar;
+    CustomProgressBar customProgressBar;
     private static final String TAG = "FACEBOOKAUTHENTICATION";
 
     @Override
@@ -72,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         emailButton = findViewById(R.id.email);
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        progressBar = new ProgressBar(MainActivity.this);
+        customProgressBar = new CustomProgressBar(MainActivity.this);
         callbackManager = CallbackManager.Factory.create();
 
         updateUI(firebaseUser);
@@ -81,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                customProgressBar.loadDialog();
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -123,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         gButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.loadDialog();
+                customProgressBar.loadDialog();
                 signIn();
             }
         });
@@ -132,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                progressBar.loadDialog();
                 LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email"));
             }
         });
@@ -146,14 +139,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-//                    progressBar.dismissDialog();
                     Toast.makeText(MainActivity.this, "Authentication Successful", Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
                     FUpdateUI(user);
                 }
                 else{
-//                    progressBar.dismissDialog();
-                    Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                    customProgressBar.dismissDialog();
+                    Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -181,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-//                                progressBar.dismissDialog();
+                                customProgressBar.dismissDialog();
                                 Intent intent = new Intent(MainActivity.this, startScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
@@ -205,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if(requestCode == RC_SIGN_IN) {
-            progressBar.dismissDialog();
+            customProgressBar.dismissDialog();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -225,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Check if signIn was successful or not
     private void firebaseAuthWithGoogle(String idToken) {
-        progressBar.loadDialog();
+        customProgressBar.loadDialog();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -259,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            progressBar.dismissDialog();
+                            customProgressBar.dismissDialog();
                             if(task.isSuccessful()) {
                                 Intent intent = new Intent(MainActivity.this, startScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -275,9 +267,15 @@ public class MainActivity extends AppCompatActivity {
     //Check if user is already logged in or not
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(MainActivity.this, startScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            if(user.isEmailVerified()) {
+                startActivity(new Intent(MainActivity.this, startScreen.class));
+            }
+            else {
+                Intent intent = new Intent(MainActivity.this, EmailVerification.class);
+                intent.putExtra("Email", user.getEmail());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
             finish();
         }
     }

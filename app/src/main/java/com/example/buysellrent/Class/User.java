@@ -1,37 +1,25 @@
 package com.example.buysellrent.Class;
 
-
-
 public class User {
-    private  String fullName, email, imageUrl, id,status;
-
+    private  String fullName, email, imageUrl, id, phoneNum, status;
 
     public User(String fullName, String email, String id) {
         this.fullName = fullName;
         this.email = email;
         this.id = id;
         this.imageUrl = "";
-        this.status="online";
-
+        this.status = "online";
     }
+
     public User() {
-
     }
+
     public User(String fullName, String email, String id, String imageUrl) {
         this.fullName = fullName;
         this.email = email;
         this.id = id;
         this.imageUrl = imageUrl;
-    }
-
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+        this.status = "online";
     }
 
     public String getFullName() {
@@ -62,5 +50,11 @@ public class User {
 
     public void setId(String id) { this.id = id; }
 
+    public String getPhoneNum() { return phoneNum; }
 
+    public void setPhoneNum(String phoneNum) { this.phoneNum = phoneNum; }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 }

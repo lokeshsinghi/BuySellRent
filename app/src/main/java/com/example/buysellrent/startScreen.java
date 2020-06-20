@@ -31,6 +31,8 @@ public class startScreen extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        navView.setBackgroundColor(getResources().getColor(android.R.color.black));
+//        navView.setItemRippleColor();
         NavigationUI.setupWithNavController(navView, navController);
     }
 

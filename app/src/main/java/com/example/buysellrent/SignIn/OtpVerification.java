@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buysellrent.Class.OtpEditText;
+import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.example.buysellrent.startScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,8 +20,10 @@ import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,7 @@ public class OtpVerification extends AppCompatActivity {
     TextView textView;
     OtpEditText editText;
     FirebaseAuth mAuth;
+    String phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class OtpVerification extends AppCompatActivity {
         setContentView(R.layout.activity_otp_verification);
 
         final String number = getIntent().getStringExtra("phoneNumber");
+        phone = number;
         sendOtp(number);
         next = findViewById(R.id.login);
         mAuth = FirebaseAuth.getInstance();
@@ -80,13 +85,34 @@ public class OtpVerification extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Intent intent = new Intent(OtpVerification.this, startScreen.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            updateUI(firebaseUser);
                         }
                         else {
                             //flag with getMessage
                             Toast.makeText(OtpVerification.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void updateUI(FirebaseUser firebaseUser) {
+        User user1 = new User();
+        user1.setFullName("User" + System.currentTimeMillis());
+        user1.setPhoneNum(phone);
+        user1.setId(firebaseUser.getUid());
+        user1.setImageUrl("");
+        user1.setEmail("");
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseUser.getUid()).setValue(user1)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Intent intent = new Intent(OtpVerification.this, startScreen.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
                         }
                     }
                 });

@@ -59,7 +59,7 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:inputType="none"
-                    android:text="+977"
+                    android:text="@string/code"
                     android:hint="@string/country"/>
 
             </com.google.android.material.textfield.TextInputLayout>

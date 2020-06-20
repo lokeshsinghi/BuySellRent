@@ -21,14 +21,14 @@
             android:id="@+id/notification"
             android:baselineAlignBottom="true"
             android:scaleType="center"
-            android:src="@drawable/notification_icon"></ImageView>
+            android:src="@drawable/notification_icon"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="14"
             android:scaleType="fitCenter"
-            android:src="@drawable/logo_temp"></ImageView>
+            android:src="@drawable/logo_temp"/>
 
         <SearchView
             android:layout_width="0dp"
@@ -37,8 +37,7 @@
             android:gravity="right"
             android:id="@+id/search"
             android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            ></SearchView>
+            android:layout_weight="1"/>
     </LinearLayout>
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
@@ -64,7 +63,7 @@
             android:drawableLeft="@drawable/location_icon"
             android:layout_marginLeft="10dp"
             android:text="Your location"
-            android:clickable="false"></TextView>
+            android:clickable="false"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 
 import com.example.buysellrent.R;
 
-public class ProgressBar {
+public class CustomProgressBar {
     private Activity activity;
     private AlertDialog dialog;
 
-    public ProgressBar(Activity activity) {
+    public CustomProgressBar(Activity activity) {
         this.activity = activity;
     }
 
