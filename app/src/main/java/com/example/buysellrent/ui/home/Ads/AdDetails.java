@@ -8,16 +8,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.buysellrent.Adapter.SectionPagerAdapter;
 import com.example.buysellrent.Adapters.ViewPagerAdapter;
 import com.example.buysellrent.R;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class AdDetails extends AppCompatActivity {
 
     ViewPager adImages;
     LinearLayout sliderDotspanel;
+    TabLayout tabLayout;
+    ViewPager specsPager;
     private int dotscount;
     private ImageView[] dots;
     @Override
@@ -32,6 +38,10 @@ public class AdDetails extends AppCompatActivity {
         timer.scheduleAtFixedRate(new MyTimerTask(),2000,4000);
         dotscount =viewPagerAdapter.getCount();
         dots = new ImageView[dotscount];
+        tabLayout = findViewById(R.id.specs_tab);
+        specsPager = findViewById(R.id.specs_pager);
+        setUpViewPager(specsPager);
+        tabLayout.setupWithViewPager(specsPager);
 
         for(int i=0; i < dotscount; i++){
             dots[i] = new ImageView(this);
@@ -63,6 +73,14 @@ public class AdDetails extends AppCompatActivity {
         });
 
     }
+
+    private void setUpViewPager(ViewPager specsPager) {
+        SectionPagerAdapter specsPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(),BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        specsPagerAdapter.addFragment(new SpecsFragment(),"SPECIFICATIONS");
+        specsPagerAdapter.addFragment(new DescriptionFragment(),"DESCRIPTION");
+        specsPager.setAdapter(specsPagerAdapter);
+    }
+
     public class MyTimerTask extends TimerTask{
 
         @Override
@@ -82,5 +100,9 @@ public class AdDetails extends AppCompatActivity {
                 }
             });
         }
+
     }
+
+
+
 }

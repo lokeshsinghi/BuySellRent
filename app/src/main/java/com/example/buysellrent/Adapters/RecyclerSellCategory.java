@@ -18,32 +18,27 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerSellCategory extends RecyclerView.Adapter<RecyclerSellCategory.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter( Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
+    public RecyclerSellCategory( Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
         this.mNames = mNames;
         this.mImageUrls = mImageUrls;
         this.mContext = mContext;
-        setHasStableIds(true);
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_categories,parent,false);
-        return new ViewHolder(view);
+    public RecyclerSellCategory.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_sell_categories,parent,false);
+        return new RecyclerSellCategory.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerSellCategory.ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: ");
         Glide.with(mContext)
                 .asBitmap()

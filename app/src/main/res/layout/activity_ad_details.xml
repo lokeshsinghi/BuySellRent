@@ -3,24 +3,128 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:weightSum="100"
     android:layout_height="match_parent"
     tools:context=".ui.home.Ads.AdDetails">
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/adImages"
         android:layout_width="match_parent"
-        android:layout_weight="30"
-        android:layout_height="0dp"></androidx.viewpager.widget.ViewPager>
+        android:layout_height="280dp"></androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
         android:layout_height="wrap_content"
         android:id="@+id/sliderDots"
         android:layout_below="@id/adImages"
         android:orientation="horizontal"
         android:gravity="center_vertical|center_horizontal">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"
+        android:textSize="18sp"
+        android:text="Hyundai i20 Active 2018 (Petrol)"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <org.fabiomsr.moneytextview.MoneyTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:baseTextSize="20sp"
+        android:id="@+id/adPrice"
+        android:layout_marginTop="6dp"
+        android:paddingStart="24dp"
+        app:symbol="‎रू"
+        app:decimalSeparator="."
+        app:format="#"
+        app:symbolGravity="start"
+        app:amount="3400000"
+        app:symbolMargin="3dp">
+    </org.fabiomsr.moneytextview.MoneyTextView>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_ads_black_24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/quantum_grey"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:text="New Road, Kathmandu"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawablePadding="5dp"></TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:padding="7dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/send_message"
+            android:text="Send Message"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/textPrimary"
+            android:layout_toLeftOf="@+id/call"
+            android:layout_marginRight="30dp"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/textPrimary"
+            android:id="@+id/call"
+            android:textColor="@color/colorPrimary"
+            android:text="Call"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"/>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+    <com.google.android.material.tabs.TabLayout
+
+        android:id="@+id/specs_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        app:layout_scrollFlags="scroll"
+        app:tabIndicator="@color/textPrimary"
+        app:tabIndicatorColor="@color/textPrimary"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/textPrimary"
+        app:tabTextColor="@color/quantum_grey" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/specs_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|enterAlways"/>
     </LinearLayout>
 </LinearLayout>

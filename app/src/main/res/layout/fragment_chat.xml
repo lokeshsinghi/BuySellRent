@@ -16,8 +16,9 @@
         android:focusable="true"
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         app:layout_scrollFlags="scroll"
-        app:tabIndicator="@color/colorPrimaryDark"
-        app:tabIndicatorColor="#FFFF"
+        app:tabIndicator="@color/textPrimary"
+        app:tabIndicatorColor="@color/textPrimary"
+        app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/textPrimary"
         app:tabTextColor="@color/quantum_grey" />
 
