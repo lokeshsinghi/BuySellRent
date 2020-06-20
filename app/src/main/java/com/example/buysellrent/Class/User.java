@@ -5,19 +5,13 @@ package com.example.buysellrent.Class;
 public class User {
     private  String fullName, email, imageUrl, id,status;
 
-    private boolean verifiedEmail, default_dp;
-
 
     public User(String fullName, String email, String id) {
         this.fullName = fullName;
         this.email = email;
         this.id = id;
         this.imageUrl = "";
-        this.default_dp = true;
         this.status="online";
-        this.verifiedEmail = false;
-
-        //this.lastConnected=now;
 
     }
     public User() {
@@ -28,8 +22,6 @@ public class User {
         this.email = email;
         this.id = id;
         this.imageUrl = imageUrl;
-        this.default_dp = false;
-        this.verifiedEmail = true;
     }
 
 
@@ -66,21 +58,9 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isVerifiedEmail() {
-        return verifiedEmail;
-    }
-
-    public void setVerifiedEmail(boolean verifiedEmail) {
-        this.verifiedEmail = verifiedEmail;
-    }
-
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
-
-    public boolean isDefault_dp() { return default_dp; }
-
-    public void setDefault_dp(boolean default_dp) { this.default_dp = default_dp; }
 
 
 }

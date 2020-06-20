@@ -10,14 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.chat.MessageActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(mContext).inflate(R.layout.user_item,parent,false);
-        return new UserAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -81,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         return mUsers.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView username;
         public ImageView profile_image;
