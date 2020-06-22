@@ -1,9 +1,5 @@
 package com.example.buysellrent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.buysellrent.Class.CustomProgressBar;
 import com.example.buysellrent.Class.User;
-import com.example.buysellrent.SignIn.EmailSignIn;
 import com.example.buysellrent.SignIn.EmailVerification;
 import com.example.buysellrent.SignIn.PhoneSignIn;
 import com.facebook.AccessToken;
@@ -43,7 +42,7 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button phoneButton, gButton, emailButton;
+    Button phoneButton, gButton;
     Button fButton;
     LoginButton defaultBtn;
     FirebaseUser firebaseUser;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         phoneButton = findViewById(R.id.phone);
         gButton = findViewById(R.id.google);
         fButton = findViewById(R.id.facebook);
-        emailButton = findViewById(R.id.email);
+//        emailButton = findViewById(R.id.email);
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         customProgressBar = new CustomProgressBar(MainActivity.this);
@@ -106,12 +105,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Email and password signIn and signUp
-        emailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, EmailSignIn.class));
-            }
-        });
+//        emailButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MainActivity.this, EmailSignIn.class));
+//            }
+//        });
 
         //Google SignIn
         gButton.setOnClickListener(new View.OnClickListener() {
