@@ -266,7 +266,8 @@ public class MainActivity extends AppCompatActivity {
     //Check if user is already logged in or not
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            if(user.isEmailVerified()) {
+            String email = user.getEmail();
+            if(email.isEmpty() || user.isEmailVerified()) {
                 startActivity(new Intent(MainActivity.this, startScreen.class));
             }
             else {
