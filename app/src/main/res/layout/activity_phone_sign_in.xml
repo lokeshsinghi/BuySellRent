@@ -1,108 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
+    android:weightSum="100"
+    android:layout_centerInParent="true"
     tools:context=".SignIn.PhoneSignIn">
 
-    <LinearLayout
-        android:id="@+id/first"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="20"/>
 
         <ImageView
-            android:layout_marginTop="25dp"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/logo_temp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:src="@drawable/ic_user"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enter"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:text="LOGIN"
+            android:textColor="@color/textPrimary"
             android:textStyle="bold"
-            android:textSize="35sp"
+            android:textSize="24sp"
             android:maxLines="1"
             android:layout_marginStart="30dp"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             android:layout_marginStart="30dp"
             android:maxLines="1"
-            android:text="@string/confirm"/>
+            android:text="Enter your phone number to proceed"/>
 
         <LinearLayout
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:weightSum="100"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/custom_button"
             android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="75dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="16"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/quantum_grey"
+                    android:text="@string/code" />
+
+            <View
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="10dp"
-                android:clickable="false"
-                android:focusable="false">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="#c0c0c0"/>
 
-                <EditText
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:text="@string/code"
-                    android:hint="@string/country"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="15dp">
-
-                <EditText
-                    android:id="@+id/phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/num"
-                    android:maxLength="10"
-                    android:inputType="phone"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+                android:layout_weight="82"
+                android:textSize="15sp"
+                android:ems="10"
+                android:layout_marginLeft="10dp"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/quantum_grey" />
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/first"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="30dp"
+        android:layout_weight="5"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/quantum_grey"
+        android:text="A six digit OTP will be sent via SMS to verify your mobile number."/>
 
         <Button
             android:id="@+id/next"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/custom_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="7"
+            android:layout_marginTop="25dp"
+            android:background="@color/textPrimary"
+            android:textColor="@color/colorPrimary"
             android:text="@string/next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="20"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+</LinearLayout>
