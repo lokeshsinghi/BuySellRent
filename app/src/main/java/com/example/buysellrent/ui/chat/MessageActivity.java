@@ -45,7 +45,9 @@ public class MessageActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private List<ChatBox> chatBoxList;
     private RecyclerView recyclerView;
-    private String userid;
+    private String userid,type;
+    private ValueEventListener seenListener;
+    private DatabaseReference seenReference;
 
 
     @Override
@@ -67,7 +69,7 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         userid = getIntent().getStringExtra("userid");
-       // String type = getIntent().getStringExtra("type");
+        type = getIntent().getStringExtra("type");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Users").child(userid);
@@ -118,7 +120,7 @@ public class MessageActivity extends AppCompatActivity {
         if(Objects.equals(dataSnapshot.child("status").getValue(), "online")) {
             status.setText(R.string.online);
         }else{
-            String timeValue = Objects.requireNonNull(dataSnapshot.child("lastConnected").getValue()).toString();
+            String timeValue = dataSnapshot.child("lastConnected").getValue().toString();
             long temp=Long.parseLong(timeValue);
 
             Calendar smsTime = Calendar.getInstance();
@@ -136,17 +138,17 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void seenMessage(final String userid){
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Chats");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        seenReference=FirebaseDatabase.getInstance().getReference("Chats");
+        seenListener=seenReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    ChatBox chatBox = snapshot.getValue(ChatBox.class);
-                    assert chatBox != null;
-                    if (chatBox.getReceiver().equals(firebaseUser.getUid()) && chatBox.getSender().equals(userid)) {
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("isseen", true);
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    ChatBox chatBox=snapshot.getValue(ChatBox.class);
+                    if(chatBox.getReceiver().equals(firebaseUser.getUid())&& chatBox.getSender().equals(userid)){
+                        HashMap<String,Object> hashMap=new HashMap<>();
+                        hashMap.put("isseen",true);
                         snapshot.getRef().updateChildren(hashMap);
+
 
 
                     }
@@ -218,7 +220,6 @@ public class MessageActivity extends AppCompatActivity {
                 chatBoxList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ChatBox chatBox = snapshot.getValue(ChatBox.class);
-                    assert chatBox != null;
                     if(chatBox.getReceiver().equals(myid) && chatBox.getSender().equals(userid) ||
                             chatBox.getReceiver().equals(userid) && chatBox.getSender().equals(myid)){
                         chatBoxList.add(chatBox);
@@ -235,6 +236,17 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        seenReference.removeEventListener(seenListener);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        seenReference.addListenerForSingleValueEvent(seenListener);
+    }
 }

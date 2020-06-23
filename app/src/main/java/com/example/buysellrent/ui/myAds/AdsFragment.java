@@ -22,6 +22,7 @@ public class AdsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         adsViewModel =
                 ViewModelProviders.of(this).get(AdsViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_ads, container, false);
         final TextView textView = root.findViewById(R.id.text_ads);
         adsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
