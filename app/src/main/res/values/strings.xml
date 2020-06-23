@@ -49,6 +49,8 @@
     <string name="fbConnect">Sign in with Facebook and discover your trusted connections to buyers</string>
     <string name="gConnect">Connect to your Google account for simplicity and ease of use</string>
     <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
     <string name="online">online</string>
     <string name="last_seen">Last seen:</string>
+    <string name="type">Type a message</string>
 </resources>

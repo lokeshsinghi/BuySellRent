@@ -7,12 +7,14 @@ public class ChatBox {
     private String sender;
     private String receiver;
     private String message;
+    private String type;
     private boolean isseen;
 
-    public ChatBox(String sender, String receiver, String message,boolean isseen) {
+    public ChatBox(String sender, String receiver, String message,boolean isseen, String type) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.type = type;
         this.isseen=isseen;
     }
     public ChatBox(){
@@ -49,5 +51,13 @@ public class ChatBox {
 
     public void setIsseen(boolean isseen) {
         this.isseen = isseen;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

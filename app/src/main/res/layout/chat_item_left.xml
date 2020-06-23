@@ -12,6 +12,15 @@
         android:src="@drawable/logo_temp"
         android:id="@+id/chat_dp"/>
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_deafault_dp"
+        android:layout_alignStart="@+id/show_message"
+        android:layout_below="@+id/show_message"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +37,6 @@
         android:id="@+id/seen"
         android:visibility="gone"
         android:textSize="14dp"
-
         android:layout_below="@id/show_message"
         android:layout_gravity="end"/>
 

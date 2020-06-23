@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.buysellrent.Class.CustomProgressBar;
 import com.example.buysellrent.Class.User;
+import com.example.buysellrent.SignIn.EmailSignUp;
 import com.example.buysellrent.SignIn.EmailVerification;
 import com.example.buysellrent.SignIn.PhoneSignIn;
 import com.facebook.AccessToken;
@@ -21,7 +24,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,10 +45,11 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     Button phoneButton, gButton;
-    Button fButton;
-    LoginButton defaultBtn;
+    Button fButton, login;
+    EditText email, pass;
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
+    TextView createNew;
     private GoogleSignInClient googleSignInClient;
     private int RC_SIGN_IN = 1;
     private CallbackManager callbackManager;
@@ -61,8 +64,11 @@ public class MainActivity extends AppCompatActivity {
         phoneButton = findViewById(R.id.phone);
         gButton = findViewById(R.id.google);
         fButton = findViewById(R.id.facebook);
-//        emailButton = findViewById(R.id.email);
         mAuth = FirebaseAuth.getInstance();
+        email = findViewById(R.id.email);
+        pass = findViewById(R.id.editPassword);
+        login = findViewById(R.id.login);
+        createNew = findViewById(R.id.create);
         firebaseUser = mAuth.getCurrentUser();
         customProgressBar = new CustomProgressBar(MainActivity.this);
         callbackManager = CallbackManager.Factory.create();
@@ -88,6 +94,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Email Pass Login
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userEmail = email.getText().toString();
+                String password = pass.getText().toString();
+                if(userEmail.equalsIgnoreCase("")) {
+                    email.setError("This field cannot be empty.");
+                }
+                else if(password.equalsIgnoreCase("")) {
+                    pass.setError("This field cannot be empty.");
+                }
+                else {
+                    customProgressBar.loadDialog();
+                    mAuth.signInWithEmailAndPassword(userEmail, password)
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()) {
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        updateUI(user);
+                                    }
+                                    else {
+                                        customProgressBar.dismissDialog();
+                                        updateUI(null);
+                                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                }
+            }
+        });
+
+        //Create new Email pass acc
+        createNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, EmailSignUp.class));
+            }
+        });
+
         //Google signInClient dialog builder
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -103,14 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PhoneSignIn.class));
             }
         });
-
-        //Email and password signIn and signUp
-//        emailButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(MainActivity.this, EmailSignIn.class));
-//            }
-//        });
 
         //Google SignIn
         gButton.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Handle Facebook AccessToken
     private void handleFacebookAccessToken(AccessToken accessToken) {
         Log.d(TAG, "handleAccessToken" + accessToken);
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
@@ -266,7 +306,8 @@ public class MainActivity extends AppCompatActivity {
     //Check if user is already logged in or not
     public void updateUI(FirebaseUser user) {
         if (user != null) {
-            if(user.isEmailVerified()) {
+            String email = user.getEmail();
+            if(email.isEmpty() || user.isEmailVerified()) {
                 startActivity(new Intent(MainActivity.this, startScreen.class));
             }
             else {
