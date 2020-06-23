@@ -9,6 +9,7 @@ public class User {
         this.id = id;
         this.imageUrl = "";
         this.status = "online";
+        this.phoneNum = "";
     }
 
     public User() {
@@ -20,6 +21,7 @@ public class User {
         this.id = id;
         this.imageUrl = imageUrl;
         this.status = "online";
+        this.phoneNum = "";
     }
 
     public String getFullName() {

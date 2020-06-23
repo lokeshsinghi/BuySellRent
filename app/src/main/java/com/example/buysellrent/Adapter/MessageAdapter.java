@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.dmallcott.dismissibleimageview.DismissibleImageView;
 import com.example.buysellrent.R;
 import com.example.buysellrent.Class.ChatBox;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,7 +52,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ChatBox chatBox = mchat.get(position);
-            holder.show_message.setText((chatBox.getMessage()));
+            if(chatBox.getType().equals("image")) {
+                holder.show_message.setVisibility(View.GONE);
+                Glide.with(mcontext).load(chatBox.getMessage()).into(holder.imageMessage);
+            }
+            else {
+                holder.imageMessage.setVisibility(View.GONE);
+                holder.show_message.setText((chatBox.getMessage()));
+            }
             if(imageurl.equals("")){
                 holder.profilepic.setImageResource(R.drawable.logo_temp);
             }
@@ -73,7 +82,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-
         return mchat.size();
     }
 
@@ -81,6 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public TextView show_message;
         public ImageView profilepic;
         public TextView text_seen;
+        public ImageView imageMessage;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -88,6 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             show_message = itemView.findViewById(R.id.show_message);
             profilepic = itemView.findViewById(R.id.chat_dp);
             text_seen=itemView.findViewById(R.id.seen);
+            imageMessage = itemView.findViewById(R.id.image);
         }
     }
 

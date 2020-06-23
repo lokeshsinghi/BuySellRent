@@ -16,6 +16,7 @@ import com.example.buysellrent.Adapter.UserAdapter;
 import com.example.buysellrent.Class.ChatBox;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,7 +43,7 @@ public class Sell_zone extends Fragment {
     private List<User> mmm;
     ProgressBar progressBar;
     DatabaseReference reference;
-
+    FirebaseUser fuser;
 
 
 
@@ -55,7 +58,7 @@ public class Sell_zone extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         usersList=new ArrayList<>();
 
 
@@ -78,25 +81,24 @@ public class Sell_zone extends Fragment {
                         usersList.add(chatBox.getSender());
                     }
                 }
-                for(String a:usersList)
-                {
-                    System.out.println(a);
-                }
-
                 readChats();
-
-
             }
-
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+//            @Override
+//            public void onSuccess(InstanceIdResult instanceIdResult) {
+//                updateToken(instanceIdResult.getToken());
+//            }
+//        });
         return view;
     }
+
 
     private void readChats() {
         mUsers=new HashSet<>();

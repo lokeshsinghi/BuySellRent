@@ -14,6 +14,7 @@ import com.example.buysellrent.Class.OtpEditText;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.example.buysellrent.startScreen;
+import com.example.buysellrent.ui.settings.EditProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -25,6 +26,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -80,22 +83,62 @@ public class OtpVerification extends AppCompatActivity {
     }
 
     private void signIn(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if(firebaseUser == null) {
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                updateUI(firebaseUser);
+                            } else {
+                                //flag with getMessage
+                                Toast.makeText(OtpVerification.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }
+        else{
+            mAuth.getCurrentUser().linkWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()) {
+                                FirebaseUser firebaseUser1 = FirebaseAuth.getInstance().getCurrentUser();
+                                link(firebaseUser1);
+                            }
+                            else{
+                                Toast.makeText(OtpVerification.this, task.getException().getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+    //Link phone to already created account
+    private void link(FirebaseUser firebaseUser) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("phoneNum", phone);
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseUser.getUid()).updateChildren(childUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                            updateUI(firebaseUser);
+                            startActivity(new Intent(OtpVerification.this, EditProfile.class));
+                            finish();
                         }
                         else {
-                            //flag with getMessage
-                            Toast.makeText(OtpVerification.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OtpVerification.this, task.getException().getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
+    //Create a new user with phone signIn
     private void updateUI(FirebaseUser firebaseUser) {
         User user1 = new User();
         user1.setFullName("User" + System.currentTimeMillis());
