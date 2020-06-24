@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.sell.forms.CarForm"></activity>
+        <activity android:name=".ui.sell.CommonForm"></activity>
+        <activity android:name=".ui.sell.forms.CarForm" />
         <activity android:name=".ui.home.Ads.FullScreenAdImage" />
         <activity android:name=".ui.home.Ads.AdDetails" />
 
@@ -22,7 +24,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".ui.settings.EditProfile"></activity>
+        <activity android:name=".ui.settings.EditProfile" />
         <activity android:name=".SignIn.EmailVerification" />
 
         <uses-library
@@ -32,9 +34,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
-        <activity android:name=".ui.home.selectLocation"/>
-        <activity android:name=".ui.chat.MessageActivity"/>
-        <activity android:name=".SignIn.EmailSignUp"/>
+
+        <activity android:name=".ui.home.selectLocation" />
+        <activity android:name=".ui.chat.MessageActivity" />
+        <activity android:name=".SignIn.EmailSignUp" />
         <activity android:name=".SignIn.OtpVerification" />
         <activity android:name=".SignIn.PhoneSignIn" />
         <activity
@@ -47,18 +50,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <service android:name=".Notification.FirebaseMessaging">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-        </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
         </service>
-        <service android:name=".Notification.FirebaseService"
+        <service
+            android:name=".Notification.FirebaseService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE" />
             </intent-filter>
         </service>
     </application>

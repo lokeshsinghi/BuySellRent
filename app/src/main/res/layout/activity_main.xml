@@ -23,6 +23,8 @@
         android:layout_height="0dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_marginRight="30dp"
         android:layout_weight="10"
         android:background="@drawable/custom_button"
@@ -38,6 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_marginTop="25dp"
         android:layout_marginRight="30dp"
         android:layout_weight="10"
@@ -72,7 +76,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginBottom="15dp"
         android:layout_weight="10"
-        android:background="@color/textPrimary"
+        android:background="@color/buttonBackground"
         android:text="@string/login"
         android:textColor="@color/colorPrimary" />
 
@@ -122,6 +126,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
+            android:paddingLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_weight="0.5"
             android:background="@drawable/custom_button"
@@ -135,6 +140,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
+            android:paddingLeft="10dp"
             android:layout_marginRight="30dp"
             android:layout_weight="0.5"
             android:background="@drawable/custom_button"
@@ -180,6 +186,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp"
             android:text="Don't have an account? " />
 
         <TextView
@@ -187,7 +195,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:text="Sign up"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:text="Sign up."
             android:textColor="@color/textPrimary"
             android:textStyle="bold" />
     </LinearLayout>

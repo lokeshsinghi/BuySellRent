@@ -1,7 +1,6 @@
 package com.example.buysellrent.ui.sell.forms;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,7 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.buysellrent.R;
+import com.example.buysellrent.ui.sell.CommonForm;
 
 public class CarForm extends AppCompatActivity {
 
@@ -119,8 +121,6 @@ public class CarForm extends AppCompatActivity {
                 Fuel=fuel.getText().toString();
                 Title=title.getText().toString();
                 Desc=desc.getText().toString();
-
-
                 if(year.getText().toString().equals(""))
                     Year=-1;
                 else
@@ -149,12 +149,8 @@ public class CarForm extends AppCompatActivity {
                             Toast.LENGTH_LONG);
                     toast.show();
                 }
-
-
-
-
-
-
+                Intent intent = new Intent(CarForm.this, CommonForm.class);
+                startActivity(intent);
             }
         });
 

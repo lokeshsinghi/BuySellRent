@@ -1,20 +1,21 @@
 package com.example.buysellrent.SignIn;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.buysellrent.Class.CustomProgressBar;
 import com.example.buysellrent.Class.User;
+import com.example.buysellrent.MainActivity;
 import com.example.buysellrent.R;
-import com.example.buysellrent.startScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class EmailSignUp extends AppCompatActivity {
 
     EditText name, pass, rPass, email;
+    TextView login;
     Button signUp;
     FirebaseAuth mAuth;
     String fullName, password, rPassword, mail;
@@ -40,8 +42,18 @@ public class EmailSignUp extends AppCompatActivity {
         rPass = findViewById(R.id.repeatPass);
         email = findViewById(R.id.email);
         signUp = findViewById(R.id.signUp);
+        login = findViewById(R.id.logIn);
         mAuth = FirebaseAuth.getInstance();
         pd = new CustomProgressBar(EmailSignUp.this);
+
+
+        //already have an account
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EmailSignUp.this, MainActivity.class));
+            }
+        });
 
 
         //Email and password signUp
