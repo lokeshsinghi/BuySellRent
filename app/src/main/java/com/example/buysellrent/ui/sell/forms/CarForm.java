@@ -26,7 +26,8 @@ public class CarForm extends AppCompatActivity {
 
     private String Brand,Fuel,Title,Desc,transmission;
     private int Year,Driven;
-    private int flag=0;
+
+    private int flag=0,flag2=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class CarForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                flag2=1;
                 Brand=brand.getText().toString();
                 Fuel=fuel.getText().toString();
                 Title=title.getText().toString();
@@ -131,26 +133,55 @@ public class CarForm extends AppCompatActivity {
                 else
                     Driven=Integer.parseInt(driven.getText().toString());
 
-                if (Brand.equalsIgnoreCase(""))
+                if (Brand.equalsIgnoreCase("")) {
                     brand.setError("Brand name is required!");
-                if (Fuel.equalsIgnoreCase(""))
-                    fuel.setError("Fuel type is required!");
-                if (Title.equalsIgnoreCase("")||Title.length()<10)
-                    title.setError("Add appropriate title!");
-                if (Desc.equalsIgnoreCase("")||Desc.length()<10)
-                    desc.setError("Minimum 10 characters are required!");
-                if (Year<=0)
+                    flag2=0;
+                }else
+
+                if (Year<=0){
                     year.setError("Enter valid age!");
-                if (Driven<=0)
+                    flag2=0;}else
+
+                if (Driven<=0){
                     driven.setError("Enter valid Kilometers!");
+                    flag2=0;}else
+
+                if (Fuel.equalsIgnoreCase("")){
+                    fuel.setError("Fuel type is required!");
+                    flag2=0;}else
+
+                if (Title.equalsIgnoreCase("")||Title.length()<10){
+                    title.setError("Add appropriate title!");
+                    flag2=0;}else
+
+                if (Desc.equalsIgnoreCase("")||Desc.length()<10){
+                    desc.setError("Minimum 10 characters are required!");
+                    flag2=0;}else
+
+
+
+
                 if(flag==0){
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Please Select Transmission Type!",
                             Toast.LENGTH_LONG);
                     toast.show();
+                    flag2=0;
+                }else
+                {
+                    final Bundle bundle = new Bundle();
+                    bundle.putString("brand",Brand);
+                    bundle.putInt("year",Year);
+                    bundle.putInt("driven",Driven);
+                    bundle.putString("transmission",transmission);
+                    bundle.putString("title",Title);
+                    bundle.putString("description",Desc);
+                    bundle.putString("fuel",Fuel);
+
+                    Intent intent = new Intent(CarForm.this, CommonForm.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(CarForm.this, CommonForm.class);
-                startActivity(intent);
             }
         });
 

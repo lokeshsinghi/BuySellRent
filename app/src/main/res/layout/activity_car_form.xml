@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:background="@color/quantum_white_100"
     android:orientation="vertical"
-    >
+    android:background="@color/quantum_white_100"
+>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 android:id="@+id/transmission_id"
                 android:layout_height="wrap_content"
                 android:text="Transmission"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:textSize="12sp"
                 android:layout_below="@+id/year"/>
             <RadioGroup
@@ -121,25 +121,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:background="@drawable/custom_button"
                     android:clickable="true"
                     android:text="Automatic"
                     android:textAlignment="gravity"
                     android:textSize="14sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:focusable="true" />
 
                 <Button
                     android:id="@+id/manual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:background="@drawable/custom_button"
                     android:layout_weight="1"
                     android:text="Manual"
                     android:textSize="14sp"
                     android:clickable="true"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:focusable="true" />
 
             </RadioGroup>
 
@@ -177,8 +179,8 @@
                 android:id="@+id/ran"
                 android:layout_height="wrap_content"
                 android:text="Ad title*"
-                android:layout_marginLeft="5dp"
-                android:textSize="12dp"
+                android:layout_marginStart="5dp"
+                android:textSize="12sp"
                 android:layout_below="@+id/fuel"/>
 
             <EditText
@@ -210,7 +212,7 @@
                     android:layout_weight="0.85"
                     android:ems="10"
 
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:text="Mention the key features of your item (e.g. brand, model, age, type)"
                     android:textColor="@android:color/black"
                      />
@@ -225,7 +227,7 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@android:color/black"
                     
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
@@ -236,7 +238,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Describe what you are selling *"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:layout_below="@+id/lay1"/>
 
             <EditText
@@ -265,8 +267,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.85"
                     android:ems="10"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="12dp"
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"
                     android:text="Include condition,features and reason for selling"
                     android:textColor="@android:color/black"
                      />
@@ -281,7 +283,7 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@android:color/black"
 
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
