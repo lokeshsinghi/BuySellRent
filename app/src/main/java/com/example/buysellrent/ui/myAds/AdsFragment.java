@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class AdsFragment extends Fragment {
 
-    int c;
     String AdId;
     ArrayList<String> images;
     DatabaseReference databaseReference;
@@ -43,12 +42,8 @@ public class AdsFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     AdvertisementCarModel car=snapshot.getValue(AdvertisementCarModel.class);
                     assert car != null;
-                    c=car.getImgCount();
                     AdId=car.getAdId();
-                    images=getImageList(c,AdId);
-                    for(String a:images){
-                        Log.e("random",a);
-                    }
+                    getImageList(AdId);
                 }
             }
 
@@ -61,19 +56,33 @@ public class AdsFragment extends Fragment {
         return view;
     }
 
-
-
-    @NonNull
-    private ArrayList<String> getImageList(int c, String AdId){
+    private void getImageList( String AdId){
         final ArrayList<String> imageList=new ArrayList<>();
         final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("AdImages").child(AdId);
 
-        for(int i=1;i<=c;i++)
-        {
-            String temp="image"+i;
-            imageList.add(databaseReference.child(temp).toString());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        if(snapshot.getValue()!=null) {
+                            imageList.add(snapshot.getValue().toString());
+
+                        }
+                    }
+                    images.addAll(imageList);
+                    afterReceivingMethod();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
-        return imageList;
+
+
+    private void afterReceivingMethod(){
 
     }
+
 }
