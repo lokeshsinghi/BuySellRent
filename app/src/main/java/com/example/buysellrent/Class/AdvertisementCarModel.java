@@ -3,6 +3,14 @@ package com.example.buysellrent.Class;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class AdvertisementCarModel {
@@ -18,8 +26,10 @@ public class AdvertisementCarModel {
     private long price;
     private boolean accepted;
     private Uri image;
+    private int imgCount;
+    private String category;
 
-    //private ArrayList<Uri> imageList;
+    private ArrayList<String> imageList=new ArrayList<>();
 
     public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price) {
         Brand = brand;
@@ -30,15 +40,43 @@ public class AdvertisementCarModel {
         Desc = desc;
         Fuel = fuel;
         accepted=false;
-
         this.price=price;
-        //this.image=image;
-        //this.imageList=imageList;
+        category="Car";
     }
 
 //    public void setImageList(ArrayList<Uri> imageList) {
 //        this.imageList = imageList;
 //    }
+
+    public ArrayList<String> getImageList(){
+        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Ads").child("CarAds");
+        int c=getImgCount();
+        for(int i=1;i<=c;i++)
+        {
+            String temp="image"+i;
+            databaseReference.child(temp).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    imageList.add(dataSnapshot.toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        return imageList;
+
+    }
+
+    public int getImgCount() {
+        return imgCount;
+    }
+
+    public void setImgCount(int imgCount) {
+        this.imgCount = imgCount;
+    }
 
     public Uri getImage() {
         return image;

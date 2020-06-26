@@ -132,7 +132,7 @@ public class CommonForm extends AppCompatActivity {
                         String Uid = firebaseUser.getUid();
                         advertisementCarModel.setSellerId(Uid);
 
-
+                        advertisementCarModel.setImgCount(imageList.size());
 
                         for (Uri a : imageList) {
 
@@ -156,7 +156,7 @@ public class CommonForm extends AppCompatActivity {
                                                     {
 
                                                         String img="image"+i;
-                                                        FirebaseDatabase.getInstance().getReference("CarAds").child(randId).child(img).setValue(uri.toString());
+                                                        FirebaseDatabase.getInstance().getReference("Ads").child("CarAds").child(randId).child(img).setValue(uri.toString());
                                                         //Log.e("images",a.toString());
 
                                                     }
@@ -194,7 +194,7 @@ public class CommonForm extends AppCompatActivity {
 
                         randId = UUID.randomUUID().toString();
                         assert randId != null;
-                        FirebaseDatabase.getInstance().getReference("CarAds").child(randId)
+                        FirebaseDatabase.getInstance().getReference("Ads").child("CarAds").child(randId)
                                 .setValue(advertisementCarModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -204,8 +204,8 @@ public class CommonForm extends AppCompatActivity {
                                     Toast.makeText(CommonForm.this, "Error", Toast.LENGTH_LONG).show();
                                 }
 
-                                String imgCount=""+imageListFinal.size();
-                                FirebaseDatabase.getInstance().getReference("CarAds").child(randId).child("ImageCount").setValue(imgCount);
+//                                String imgCount=""+imageListFinal.size();
+//                                FirebaseDatabase.getInstance().getReference("CarAds").child(randId).child("ImageCount").setValue(imgCount);
                                 Intent intent = new Intent(CommonForm.this, VerificationAd.class);
                                 startActivity(intent);
 
