@@ -27,4 +27,13 @@ public class VerificationAd extends AppCompatActivity {
         Intent intent=new Intent(VerificationAd.this, MainActivity.class);
         startActivity(intent);
     }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent=new Intent(VerificationAd.this, MainActivity.class);
+        startActivity(intent);
+
+    }
 }

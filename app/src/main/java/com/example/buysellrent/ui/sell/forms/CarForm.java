@@ -28,6 +28,7 @@ public class CarForm extends AppCompatActivity {
     private int Year,Driven;
 
     private int flag=0,flag2=1;
+    private String cat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class CarForm extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
         if(bundle.getString("category")!=null){
             category.setText(bundle.getString("category"));
+            cat=bundle.getString("category");
         }
         else
             category.setText("Unidentified");
@@ -177,6 +179,7 @@ public class CarForm extends AppCompatActivity {
                     bundle.putString("title",Title);
                     bundle.putString("description",Desc);
                     bundle.putString("fuel",Fuel);
+                    bundle.putString("category",cat);
 
                     Intent intent = new Intent(CarForm.this, CommonForm.class);
                     intent.putExtras(bundle);

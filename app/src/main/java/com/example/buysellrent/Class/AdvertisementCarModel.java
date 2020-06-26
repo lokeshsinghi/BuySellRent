@@ -17,9 +17,10 @@ public class AdvertisementCarModel {
 
     private String SellerId;
     private String Brand;
+    private String category;
     private int Year ;
     private int Driven ;
-    private String transmission ;
+    private String transmission;
     private String Title;
     private String Desc;
     private String Fuel;
@@ -30,7 +31,7 @@ public class AdvertisementCarModel {
 
     private ArrayList<String> imageList=new ArrayList<>();
 
-    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price) {
+    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price,String category) {
         Brand = brand;
         Year = year;
         Driven = driven;
@@ -40,8 +41,16 @@ public class AdvertisementCarModel {
         Fuel = fuel;
         accepted=false;
         this.price=price;
+        this.category=category;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 //    public void setImageList(ArrayList<Uri> imageList) {
 //        this.imageList = imageList;
 //    }

@@ -123,9 +123,9 @@ public class CommonForm extends AppCompatActivity {
                         String Title = bundle.getString("title");
                         String Desc = bundle.getString("desc");
                         String Fuel = bundle.getString("fuel");
+                        String category=bundle.getString("category");
 
-
-                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price);
+                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category);
 
 
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -156,7 +156,7 @@ public class CommonForm extends AppCompatActivity {
                                                     {
 
                                                         String img="image"+i;
-                                                        FirebaseDatabase.getInstance().getReference("Ads").child("CarAds").child(randId).child(img).setValue(uri.toString());
+                                                        FirebaseDatabase.getInstance().getReference("Ads").child(randId).child(img).setValue(uri.toString());
                                                         //Log.e("images",a.toString());
 
                                                     }
@@ -194,7 +194,7 @@ public class CommonForm extends AppCompatActivity {
 
                         randId = UUID.randomUUID().toString();
                         assert randId != null;
-                        FirebaseDatabase.getInstance().getReference("Ads").child("CarAds").child(randId)
+                        FirebaseDatabase.getInstance().getReference("Ads").child(randId)
                                 .setValue(advertisementCarModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
