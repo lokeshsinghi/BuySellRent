@@ -27,7 +27,6 @@ public class AdvertisementCarModel {
     private boolean accepted;
     private Uri image;
     private int imgCount;
-    private String category;
 
     private ArrayList<String> imageList=new ArrayList<>();
 
@@ -41,7 +40,6 @@ public class AdvertisementCarModel {
         Fuel = fuel;
         accepted=false;
         this.price=price;
-        category="Car";
     }
 
 //    public void setImageList(ArrayList<Uri> imageList) {
