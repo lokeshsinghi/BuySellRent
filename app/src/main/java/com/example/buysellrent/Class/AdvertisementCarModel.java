@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class AdvertisementCarModel {
 
+    private String AdId;
     private String SellerId;
     private String Brand;
     private String category;
@@ -26,12 +27,12 @@ public class AdvertisementCarModel {
     private String Fuel;
     private long price;
     private boolean accepted;
-    private Uri image;
     private int imgCount;
 
-    private ArrayList<String> imageList=new ArrayList<>();
 
     public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price,String category) {
+        AdId="Unknown";
+        SellerId="Unknown";
         Brand = brand;
         Year = year;
         Driven = driven;
@@ -42,6 +43,17 @@ public class AdvertisementCarModel {
         accepted=false;
         this.price=price;
         this.category=category;
+        imgCount=0;
+    }
+
+    public AdvertisementCarModel(){}
+
+    public String getAdId() {
+        return AdId;
+    }
+
+    public void setAdId(String adId) {
+        AdId = adId;
     }
 
     public String getCategory() {
@@ -55,27 +67,6 @@ public class AdvertisementCarModel {
 //        this.imageList = imageList;
 //    }
 
-    public ArrayList<String> getImageList(){
-        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Ads").child("CarAds");
-        int c=getImgCount();
-        for(int i=1;i<=c;i++)
-        {
-            String temp="image"+i;
-            databaseReference.child(temp).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    imageList.add(dataSnapshot.toString());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        return imageList;
-
-    }
 
     public int getImgCount() {
         return imgCount;
@@ -85,13 +76,6 @@ public class AdvertisementCarModel {
         this.imgCount = imgCount;
     }
 
-    public Uri getImage() {
-        return image;
-    }
-
-    public void setImage(Uri image) {
-        this.image = image;
-    }
 
     public long getPrice() {
         return price;

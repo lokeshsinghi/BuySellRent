@@ -28,6 +28,7 @@ import com.example.buysellrent.Adapters.RecyclerAdsAdapter;
 import com.example.buysellrent.Adapters.RecyclerViewAdapter;
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.home.Ads.AdDetails;
+import com.example.buysellrent.ui.sell.VerificationAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -75,7 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         recyclerAds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeFragment.this.getActivity(), AdDetails.class);
+                Intent intent = new Intent(HomeFragment.this.getActivity(), VerificationAd.class);
                 startActivity(intent);
             }
         });

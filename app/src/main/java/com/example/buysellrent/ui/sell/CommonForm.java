@@ -63,7 +63,7 @@ public class CommonForm extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button images_next;
     private EditText price_ad;
-    private String randId;
+    private String AdId;
     private int i;
 
     @Override
@@ -125,13 +125,15 @@ public class CommonForm extends AppCompatActivity {
                         String Fuel = bundle.getString("fuel");
                         String category=bundle.getString("category");
 
+                        AdId = UUID.randomUUID().toString();
+
                         AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category);
 
 
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                         String Uid = firebaseUser.getUid();
                         advertisementCarModel.setSellerId(Uid);
-
+                        advertisementCarModel.setAdId(AdId);
                         advertisementCarModel.setImgCount(imageList.size());
 
                         for (Uri a : imageList) {
@@ -156,7 +158,7 @@ public class CommonForm extends AppCompatActivity {
                                                     {
 
                                                         String img="image"+i;
-                                                        FirebaseDatabase.getInstance().getReference("Ads").child(randId).child(img).setValue(uri.toString());
+                                                        FirebaseDatabase.getInstance().getReference("AdImages").child(AdId).child(img).setValue(uri.toString());
                                                         //Log.e("images",a.toString());
 
                                                     }
@@ -192,9 +194,9 @@ public class CommonForm extends AppCompatActivity {
                         }
 
 
-                        randId = UUID.randomUUID().toString();
-                        assert randId != null;
-                        FirebaseDatabase.getInstance().getReference("Ads").child(randId)
+
+
+                        FirebaseDatabase.getInstance().getReference("Ads").child(AdId)
                                 .setValue(advertisementCarModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
