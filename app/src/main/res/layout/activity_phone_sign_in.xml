@@ -38,12 +38,13 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="3"
+            android:layout_marginBottom="5dp"
             android:layout_marginStart="30dp"
             android:maxLines="1"
             android:text="Enter your phone number to proceed"/>
 
         <LinearLayout
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="7"
@@ -95,6 +96,7 @@
         android:layout_weight="5"
         android:layout_marginLeft="30dp"
         android:textColor="@color/quantum_grey"
+        android:layout_marginBottom="5dp"
         android:text="A six digit OTP will be sent via SMS to verify your mobile number."/>
 
         <Button
@@ -104,7 +106,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
             android:layout_weight="7"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:background="@color/textPrimary"
             android:textColor="@color/colorPrimary"
             android:text="@string/next"
