@@ -13,22 +13,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.example.buysellrent.Class.AdvertisementCarModel;
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.home.Ads.AdDetails;
+
+import org.fabiomsr.moneytextview.MoneyTextView;
 
 import java.util.ArrayList;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    ArrayList<AdvertisementCarModel> ads = new ArrayList<>();
+    //private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerAdsAdapter( Context mContext,ArrayList<String> mNames, ArrayList<String> mImageUrls) {
-        this.mNames = mNames;
-        this.mImageUrls = mImageUrls;
+    public RecyclerAdsAdapter( Context mContext,ArrayList<AdvertisementCarModel> ads) {
+        this.ads = ads;
+        //this.mImageUrls = mImageUrls;
         this.mContext = mContext;
     }
 
@@ -41,15 +43,16 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: ");
-        Glide.with(mContext)
-                .asBitmap()
-                .load(mImageUrls.get(position))
-                .into(holder.adImage);
-        holder.adTitle.setText(mNames.get(position));
+//        Glide.with(mContext)
+//                .asBitmap()
+//                .load(ads.get(position).getImageList().get(0))
+//                .into(holder.adImage);
+        holder.adTitle.setText(ads.get(position).getTitle());
+        holder.adPrice.setAmount(ads.get(position).getPrice());
         holder.adLayout.setOnClickListener(new View.OnClickListener()   {
             @Override
             public void onClick(View view)  {
-                Log.d(TAG, "onClick: Clicked on"+ mNames.get(position));
+                Log.d(TAG, "onClick: Clicked on"+ ads.get(position));
                 Intent intent = new Intent(mContext, AdDetails.class);
                 mContext.startActivity(intent);
             }
@@ -58,20 +61,21 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
     @Override
     public int getItemCount() {
-        return mImageUrls.size();
+        return ads.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView adImage;
         TextView adTitle;
-        TextView adPrice;
+        MoneyTextView adPrice;
         TextView adLocation;
         LinearLayout adLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             adImage = itemView.findViewById(R.id.adImage);
             adTitle = itemView.findViewById(R.id.adTitle);
+            adPrice = itemView.findViewById(R.id.adPrice);
             adLayout = itemView.findViewById(R.id.adLayout);
         }
     }
