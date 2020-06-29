@@ -1,9 +1,7 @@
 package com.example.buysellrent.ui.home.Ads;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,86 +44,84 @@ public class AdDetails extends AppCompatActivity {
         adImages = (ViewPager)findViewById(R.id.adImages);
         sliderDotspanel = (LinearLayout) findViewById(R.id.sliderDots);
         Intent intent = getIntent();
-        final String adId = intent.getStringExtra("adId");
-        final Context mContext=this;
-        final ArrayList<String> images = new ArrayList<>();
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AdImages").child(adId);
-        reference.addValueEventListener(new ValueEventListener() {
+        String adId = intent.getStringExtra("adId");
+        ArrayList<String> images = intent.getStringArrayListExtra("images");
+//        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AdImages").child(adId);
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                int n = (int) dataSnapshot.getChildrenCount();
+//                for(int i = 1; i <= n; i++){
+//                    images.add(dataSnapshot.child("image"+i).getValue(String.class));
+//                    Log.d("TAG", "Okay");
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
+       // images.add("https://firebasestorage.googleapis.com/v0/b/buysellrent-37ba8.appspot.com/o/ad_uploads%2F1593181077382.jpg?alt=media&token=fe5dd3f2-c03d-429e-be68-1d1b91d46f01");
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,adId,images);
+        adImages.setAdapter(viewPagerAdapter);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new MyTimerTask(),2000,4000);
+        dotscount =viewPagerAdapter.getCount();
+        dots = new ImageView[dotscount];
+        tabLayout = findViewById(R.id.specs_tab);
+        specsPager = findViewById(R.id.specs_pager);
+        setUpViewPager(specsPager);
+        tabLayout.setupWithViewPager(specsPager);
+        final TextView adTitle = (TextView) findViewById(R.id.adTitle);
+        final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
+
+
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Ads").child(adId);
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int n = (int) dataSnapshot.getChildrenCount();
-                for(int i = 1; i <= n; i++){
-                    images.add(dataSnapshot.child("image"+i).getValue(String.class));
-                    Log.d("TAG", "Okay");
-                    ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext,adId,images);
-                    adImages.setAdapter(viewPagerAdapter);
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new MyTimerTask(),2000,4000);
-                    dotscount =viewPagerAdapter.getCount();
-                    dots = new ImageView[dotscount];
-                    tabLayout = findViewById(R.id.specs_tab);
-                    specsPager = findViewById(R.id.specs_pager);
-                    setUpViewPager(specsPager);
-                    tabLayout.setupWithViewPager(specsPager);
-                    final TextView adTitle = (TextView) findViewById(R.id.adTitle);
-                    final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
-
-
-
-                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Ads").child(adId);
-                    reference1.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            adTitle.setText(dataSnapshot.child("title").getValue(String.class));
-                            adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    for(int j=0; j < dotscount; j++){
-                        dots[j] = new ImageView(mContext);
-                        dots[j].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactive_dot));
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(8, 0,8,0);
-                        sliderDotspanel.addView(dots[j],params);
-
-                    }
-                    dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.active_dot));
-                    adImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                        }
-
-                        @Override
-                        public void onPageSelected(int position) {
-                            for(int k=0;k<dotscount;k++){
-                                dots[k].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.nonactive_dot));
-                            }
-                            dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.active_dot));
-                        }
-
-                        @Override
-                        public void onPageScrollStateChanged(int state) {
-
-                        }
-                    });
-                }
+                adTitle.setText(dataSnapshot.child("title").getValue(String.class));
+                adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
+        for(int i=0; i < dotscount; i++){
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactive_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0,8,0);
+            sliderDotspanel.addView(dots[i],params);
 
-        //images.add("https://firebasestorage.googleapis.com/v0/b/buysellrent-37ba8.appspot.com/o/ad_uploads%2F1593181077382.jpg?alt=media&token=fe5dd3f2-c03d-429e-be68-1d1b91d46f01");
+        }
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.active_dot));
+        adImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                for(int i=0;i<dotscount;i++){
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.nonactive_dot));
+                }
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 

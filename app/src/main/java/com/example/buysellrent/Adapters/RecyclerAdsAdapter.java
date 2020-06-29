@@ -72,10 +72,28 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             @Override
             public void onClick(View view)  {
                 Log.d(TAG, "onClick: Clicked on"+ ads.get(position));
-                String adId = ads.get(position).getAdId();
-                Intent intent = new Intent(mContext, AdDetails.class);
-                intent.putExtra("adId",adId);
-                mContext.startActivity(intent);
+                final String adId = ads.get(position).getAdId();
+
+                final ArrayList<String> images = new ArrayList<>();
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AdImages").child(adId);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int n = (int) dataSnapshot.getChildrenCount();
+                        for(int i = 1; i <= n; i++){
+                            images.add(dataSnapshot.child("image"+i).getValue(String.class));
+                            Log.d("TAG", "Okay");
+                        }
+                        Intent intent = new Intent(mContext, AdDetails.class);
+                        intent.putExtra("adId",adId);
+                        intent.putExtra("images",images);
+                        mContext.startActivity(intent);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }
