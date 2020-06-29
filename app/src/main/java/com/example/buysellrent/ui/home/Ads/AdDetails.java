@@ -2,6 +2,8 @@ package com.example.buysellrent.ui.home.Ads;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.buysellrent.Adapter.SectionPagerAdapter;
 import com.example.buysellrent.Adapters.ViewPagerAdapter;
 import com.example.buysellrent.R;
+import com.example.buysellrent.ui.chat.MessageActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,35 +38,28 @@ public class AdDetails extends AppCompatActivity {
     LinearLayout sliderDotspanel;
     TabLayout tabLayout;
     ViewPager specsPager;
+    Button sendMessage;
     private int dotscount;
+    private String sellerId;
     private ImageView[] dots;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_details);
         adImages = (ViewPager)findViewById(R.id.adImages);
+        sendMessage = (Button) findViewById(R.id.send_message);
+        sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdDetails.this, MessageActivity.class);
+                intent.putExtra("userid",sellerId);
+                startActivity(intent);
+            }
+        });
         sliderDotspanel = (LinearLayout) findViewById(R.id.sliderDots);
         Intent intent = getIntent();
         String adId = intent.getStringExtra("adId");
         ArrayList<String> images = intent.getStringArrayListExtra("images");
-//        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AdImages").child(adId);
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                int n = (int) dataSnapshot.getChildrenCount();
-//                for(int i = 1; i <= n; i++){
-//                    images.add(dataSnapshot.child("image"+i).getValue(String.class));
-//                    Log.d("TAG", "Okay");
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-       // images.add("https://firebasestorage.googleapis.com/v0/b/buysellrent-37ba8.appspot.com/o/ad_uploads%2F1593181077382.jpg?alt=media&token=fe5dd3f2-c03d-429e-be68-1d1b91d46f01");
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,adId,images);
         adImages.setAdapter(viewPagerAdapter);
@@ -80,12 +76,13 @@ public class AdDetails extends AppCompatActivity {
 
 
 
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Ads").child(adId);
-        reference1.addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Ads").child(adId);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 adTitle.setText(dataSnapshot.child("title").getValue(String.class));
                 adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
+                sellerId = dataSnapshot.child("sellerId").getValue(String.class);
             }
 
             @Override

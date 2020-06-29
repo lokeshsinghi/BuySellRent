@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.buysellrent.R;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.squareup.picasso.Picasso;
 
 public class FullScreenAdImage extends AppCompatActivity {
 
@@ -19,8 +20,11 @@ public class FullScreenAdImage extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent != null){
-            int imageUri = intent.getIntExtra("fsImage",0);
-            fullScreenImageView.setImageResource(imageUri);
+            String imageUri = intent.getStringExtra("fsImage");
+            Picasso
+                    .with(this)
+                    .load(imageUri)
+                    .into(fullScreenImageView);
         }
     }
 }

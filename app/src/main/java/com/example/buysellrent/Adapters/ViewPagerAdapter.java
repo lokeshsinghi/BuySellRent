@@ -56,7 +56,6 @@ public class ViewPagerAdapter extends PagerAdapter {
                     if(position == i){
 //                        Toast.makeText(context, "Image"+i+" clicked",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, FullScreenAdImage.class);
-//                        Uri uri = Uri.parse("android.resource://com.example.buysellrent/"+images[position]);
                         intent.putExtra("fsImage",images.get(position));
                         context.startActivity(intent);
                     }
