@@ -53,4 +53,5 @@
     <string name="online">online</string>
     <string name="last_seen">Last seen:</string>
     <string name="type">Type a message</string>
+    <string name="noMsg">No Message</string>
 </resources>

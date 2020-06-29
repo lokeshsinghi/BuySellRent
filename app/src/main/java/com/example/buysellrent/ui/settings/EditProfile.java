@@ -98,17 +98,16 @@ public class EditProfile extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user1 = dataSnapshot.getValue(User.class);
                         progressBar.setVisibility(View.GONE);
-                        if(user1.getImageUrl().equals("")) {
+                        if (user1.getImageUrl().equals("")) {
                             profilePic.setImageResource(R.drawable.ic_deafault_dp);
-                        }
-                        else {
+                        } else {
                             //Temp fix. Get back to it.
                             Glide.with(getApplicationContext()).load(user1.getImageUrl()).into(profilePic);
                         }
                         name = user1.getFullName();
                         fullName.setText(name);
                         email.setText(user1.getEmail());
-                        if(!user1.getPhoneNum().equals(""))
+                        if (!user1.getPhoneNum().equals(""))
                             phoneNum.setText(user1.getPhoneNum().substring(4));
                     }
 
@@ -126,7 +125,7 @@ public class EditProfile extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(EditProfile.this, gso);
 
         //Check which providers are linked
-        for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+        for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
             if (user.getProviderId().equals("facebook.com")) {
                 fbConnect.setText(R.string.disconnect);
             }
@@ -159,11 +158,11 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String isConnected = fbConnect.getText().toString();
-                if(isConnected.equalsIgnoreCase("CONNECT"))
+                if (isConnected.equalsIgnoreCase("CONNECT"))
                     LoginManager.getInstance().logInWithReadPermissions(EditProfile.this, Arrays.asList("email"));
-                else{
+                else {
                     customProgressBar.loadDialog();
-                    for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                    for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
                         if (user.getProviderId().equals("facebook.com")) {
                             mAuth.getCurrentUser().unlink(user.getProviderId())
                                     .addOnCompleteListener(EditProfile.this, new OnCompleteListener<AuthResult>() {
@@ -193,13 +192,12 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String isConnected = GConnect.getText().toString();
-                if(isConnected.equalsIgnoreCase("CONNECT")) {
+                if (isConnected.equalsIgnoreCase("CONNECT")) {
                     customProgressBar.loadDialog();
                     signIn();
-                }
-                else{
+                } else {
                     customProgressBar.loadDialog();
-                    for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                    for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
                         if (user.getProviderId().equals("google.com")) {
                             mAuth.getCurrentUser().unlink(user.getProviderId())
                                     .addOnCompleteListener(EditProfile.this, new OnCompleteListener<AuthResult>() {
@@ -254,7 +252,7 @@ public class EditProfile extends AppCompatActivity {
         switch (id) {
             case R.id.action_done: {
                 // done btn functionalities goes here
-                if(!fullName.getText().toString().equals(name)) {
+                if (!fullName.getText().toString().equals(name)) {
                     //update database
                 }
                 break;
@@ -265,6 +263,7 @@ public class EditProfile extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -275,10 +274,10 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(callbackManager.onActivityResult(requestCode, resultCode, data)) {
+        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
         }
-        if(requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             customProgressBar.dismissDialog();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -291,8 +290,7 @@ public class EditProfile extends AppCompatActivity {
 //                Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
-        }
-        else {
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -331,14 +329,13 @@ public class EditProfile extends AppCompatActivity {
         mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     customProgressBar.dismissDialog();
                     Toast.makeText(EditProfile.this, "Linked to facebook account", Toast.LENGTH_SHORT).show();
                     fbConnect.setText(R.string.disconnect);
 //                    FirebaseUser user = mAuth.getCurrentUser();
 //                    FUpdateUI(user);
-                }
-                else{
+                } else {
                     customProgressBar.dismissDialog();
                     Toast.makeText(EditProfile.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }

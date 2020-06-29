@@ -1,6 +1,8 @@
 package com.example.buysellrent.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.dmallcott.dismissibleimageview.DismissibleImageView;
 import com.example.buysellrent.R;
 import com.example.buysellrent.Class.ChatBox;
+import com.example.buysellrent.ui.chat.FullScreenView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -51,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ChatBox chatBox = mchat.get(position);
+            final ChatBox chatBox = mchat.get(position);
             if(chatBox.getType().equals("image")) {
                 holder.show_message.setVisibility(View.GONE);
                 Glide.with(mcontext).load(chatBox.getMessage()).into(holder.imageMessage);
@@ -76,7 +79,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             else{
                 holder.text_seen.setVisibility(View.GONE);
             }
-
+            holder.imageMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mcontext, FullScreenView.class);
+                    intent.setData(Uri.parse(chatBox.getMessage()));
+                    mcontext.startActivity(intent);
+                }
+            });
 
     }
 

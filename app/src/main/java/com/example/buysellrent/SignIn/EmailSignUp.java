@@ -65,29 +65,22 @@ public class EmailSignUp extends AppCompatActivity {
                 password = pass.getText().toString();
                 rPassword = rPass.getText().toString();
 
-                if(fullName.equalsIgnoreCase("")) {
+                if (fullName.equalsIgnoreCase("")) {
                     name.setError("This field cannot be empty.");
-                }
-                else if(password.equalsIgnoreCase("")) {
+                } else if (password.equalsIgnoreCase("")) {
                     pass.setError("This field cannot be empty.");
-                }
-                else if(rPassword.equalsIgnoreCase("")) {
+                } else if (rPassword.equalsIgnoreCase("")) {
                     rPass.setError("This field cannot be empty.");
-                }
-                else if(mail.equalsIgnoreCase("")) {
+                } else if (mail.equalsIgnoreCase("")) {
                     email.setError("This field cannot be empty.");
-                }
-                else if(!password.equals(rPassword)) {
+                } else if (!password.equals(rPassword)) {
                     rPass.setError("Passwords didn't match. Try Again.");
                     rPass.setText("");
-                }
-                else if(!isValidEmail(mail)) {
+                } else if (!isValidEmail(mail)) {
                     email.setError("Enter a valid email.");
-                }
-                else if(pass.length() < 6) {
+                } else if (pass.length() < 6) {
                     pass.setError("Enter a combination of atleast 6 letters");
-                }
-                else {
+                } else {
                     pd.loadDialog();
                     mAuth.createUserWithEmailAndPassword(mail, password)
                             .addOnCompleteListener(EmailSignUp.this, new OnCompleteListener<AuthResult>() {
@@ -135,11 +128,11 @@ public class EmailSignUp extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
+                                        if (task.isSuccessful()) {
                                             pd.dismissDialog();
                                             Intent intent = new Intent(EmailSignUp.this, EmailVerification.class);
                                             intent.putExtra("Email", mail);

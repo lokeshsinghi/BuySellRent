@@ -100,23 +100,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userEmail = email.getText().toString();
                 String password = pass.getText().toString();
-                if(userEmail.equalsIgnoreCase("")) {
+                if (userEmail.equalsIgnoreCase("")) {
                     email.setError("This field cannot be empty.");
-                }
-                else if(password.equalsIgnoreCase("")) {
+                } else if (password.equalsIgnoreCase("")) {
                     pass.setError("This field cannot be empty.");
-                }
-                else {
+                } else {
                     customProgressBar.loadDialog();
                     mAuth.signInWithEmailAndPassword(userEmail, password)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()) {
+                                    if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        customProgressBar.dismissDialog();
                                         updateUI(user);
-                                    }
-                                    else {
+                                    } else {
                                         customProgressBar.dismissDialog();
                                         updateUI(null);
                                         Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -177,12 +175,18 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Authentication Successful", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    FUpdateUI(user);
-                }
-                else{
+                    if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                        FUpdateUI(user);
+                    } else {
+                        customProgressBar.dismissDialog();
+                        Intent intent = new Intent(MainActivity.this, startScreen.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
                     customProgressBar.dismissDialog();
                     Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -192,11 +196,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Update database after login through facebook
     private void FUpdateUI(FirebaseUser user) {
-        if(user != null) {
+        if (user != null) {
             String name = "", email = "", id, url = "", phonenum;
             for (UserInfo profile : user.getProviderData()) {
                 String providerId = profile.getProviderId();
-                if(providerId.equals("facebook.com")) {
+                if (providerId.equals("facebook.com")) {
                     email = profile.getEmail();
                     name = profile.getDisplayName();
                     url = profile.getPhotoUrl().toString();
@@ -211,7 +215,8 @@ public class MainActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Authentication Successful", Toast.LENGTH_SHORT).show();
                                 customProgressBar.dismissDialog();
                                 Intent intent = new Intent(MainActivity.this, startScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -232,10 +237,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(callbackManager.onActivityResult(requestCode, resultCode, data)) {
+        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
         }
-        if(requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             customProgressBar.dismissDialog();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -248,8 +253,7 @@ public class MainActivity extends AppCompatActivity {
 //                Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
-        }
-        else {
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -266,7 +270,15 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
 //                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            GUpdateUI(user);
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                GUpdateUI(user);
+                            } else {
+                                customProgressBar.dismissDialog();
+                                Intent intent = new Intent(MainActivity.this, startScreen.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             GUpdateUI(null);
@@ -275,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    //After signing in with google. Adding the user's data to firebase
+    //If user is signing in for the first Update database
     public void GUpdateUI(FirebaseUser user) {
         GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (user != null && googleSignInAccount != null) {
@@ -291,29 +303,28 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             customProgressBar.dismissDialog();
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 Intent intent = new Intent(MainActivity.this, startScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                            }
-                            else{
+                                finish();
+                            } else {
                                 //error message
                             }
                         }
                     });
         }
     }
+
     //Check if user is already logged in or not
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             String email = user.getEmail();
-            if(email.isEmpty() || user.isEmailVerified()) {
+            if (email.isEmpty() || user.isEmailVerified()) {
                 startActivity(new Intent(MainActivity.this, startScreen.class));
-            }
-            else {
+            } else {
                 Intent intent = new Intent(MainActivity.this, EmailVerification.class);
                 intent.putExtra("Email", user.getEmail());
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
             finish();

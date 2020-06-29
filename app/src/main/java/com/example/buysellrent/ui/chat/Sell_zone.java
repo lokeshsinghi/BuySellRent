@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 
 import com.example.buysellrent.Adapter.UserAdapter;
 import com.example.buysellrent.Class.ChatBox;
+import com.example.buysellrent.Class.Chatlist;
 import com.example.buysellrent.Class.User;
 import com.example.buysellrent.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,8 +30,10 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -38,13 +42,13 @@ public class Sell_zone extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private Set<User> mUsers;
+    private List<User> mUsers;
     private List<String> usersList;
     private List<User> mmm;
     ProgressBar progressBar;
     DatabaseReference reference;
     FirebaseUser fuser;
-
+    private Map<String, User> mp;
 
 
     @Override
@@ -52,34 +56,26 @@ public class Sell_zone extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view =inflater.inflate(R.layout.fragment_sell_zone, container, false);
-        recyclerView=view.findViewById(R.id.sell_view);
-        progressBar =view.findViewById(R.id.pBar2);
+        View view = inflater.inflate(R.layout.fragment_sell_zone, container, false);
+        recyclerView = view.findViewById(R.id.sell_view);
+        progressBar = view.findViewById(R.id.pBar2);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        usersList=new ArrayList<>();
+        usersList = new ArrayList<>();
+        mp = new HashMap<>();
 
 
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(fuser.getUid());
 
-        reference= FirebaseDatabase.getInstance().getReference("Chats");
-
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.orderByChild("last").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList.clear();
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    ChatBox chatBox=snapshot.getValue(ChatBox.class);
-
-                    assert fuser!=null;
-
-                    if(chatBox.getSender().equals(fuser.getUid())){
-                        usersList.add(chatBox.getReceiver());
-                    }
-                    if(chatBox.getReceiver().equals(fuser.getUid())){
-                        usersList.add(chatBox.getSender());
-                    }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                    usersList.add(chatlist.getId());
                 }
                 readChats();
             }
@@ -89,44 +85,30 @@ public class Sell_zone extends Fragment {
 
             }
         });
-
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
-//            @Override
-//            public void onSuccess(InstanceIdResult instanceIdResult) {
-//                updateToken(instanceIdResult.getToken());
-//            }
-//        });
         return view;
     }
 
 
     private void readChats() {
-        mUsers=new HashSet<>();
-        reference=FirebaseDatabase.getInstance().getReference("Users");
+        mUsers = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
 
-                for(DataSnapshot snapshot :dataSnapshot.getChildren()){
-                    User user=snapshot.getValue(User.class);
-                    assert user!=null;
-                    for(String id: usersList)
-                    {
-                        if(user.getId().equals(id)){
-
-                                mUsers.add(user);
-
-                        }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    assert user != null;
+                    mp.put(user.getId(), user);
+                }
+                for (int i = usersList.size() - 1; i >= 0; i--) {
+                    if (mp.containsKey(usersList.get(i))) {
+                        mUsers.add(mp.get(usersList.get(i)));
                     }
                 }
-                mmm=new ArrayList<>();
-                for(User user:mUsers)
-                {
-                    mmm.add(user);
-                }
                 progressBar.setVisibility(View.GONE);
-                userAdapter=new UserAdapter(getContext(),mmm,true);
+                userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
             }
 

@@ -27,7 +27,7 @@ public class PhoneSignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String number = phoneNumber.getText().toString().trim();
-                if(number.isEmpty() || number.length() < 10)
+                if (number.isEmpty() || number.length() < 10)
                     phoneNumber.setError("Enter a valid phone number.");
                 else {
                     number = "+977" + number;

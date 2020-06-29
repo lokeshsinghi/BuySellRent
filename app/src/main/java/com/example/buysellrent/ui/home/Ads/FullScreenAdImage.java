@@ -15,7 +15,7 @@ public class FullScreenAdImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_ad_image);
 
-        PhotoView fullScreenImageView = (PhotoView) findViewById(R.id.full_screen_ad_image);
+        PhotoView fullScreenImageView = findViewById(R.id.full_screen_ad_image);
 
         Intent intent = getIntent();
         if(intent != null){

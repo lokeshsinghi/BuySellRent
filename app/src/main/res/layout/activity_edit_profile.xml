@@ -121,12 +121,15 @@
                 android:layout_marginEnd="20dp">
 
                 <EditText
+                    android:clickable="true"
+                    android:focusable="false"
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/num"
-                    android:inputType="phone"
+                    android:inputType="none"
                     android:maxLength="10"
+                    android:cursorVisible="false"
                     tools:ignore="Autofill" />
 
             </com.google.android.material.textfield.TextInputLayout>

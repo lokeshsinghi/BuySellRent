@@ -36,45 +36,45 @@ public class Buy_zone extends Fragment {
     ProgressBar progressBar;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-        View view =inflater.inflate(R.layout.fragment_buy_zone, container, false);
-        recyclerView=view.findViewById(R.id.buy_view);
-        progressBar =view.findViewById(R.id.pBar);
+        View view = inflater.inflate(R.layout.fragment_buy_zone, container, false);
+        recyclerView = view.findViewById(R.id.buy_view);
+        progressBar = view.findViewById(R.id.pBar);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mUsers=new ArrayList<>();
+        mUsers = new ArrayList<>();
         readUsers();
         return view;
     }
 
     private void readUsers() {
-        final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users");
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    User user=snapshot.getValue(User.class);
-                    assert user!=null;
-                    assert firebaseUser!=null;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    assert user != null;
+                    assert firebaseUser != null;
 
-                    if(!user.getId().equals(firebaseUser.getUid())){
+                    if (!user.getId().equals(firebaseUser.getUid())) {
                         mUsers.add(user);
                     }
                 }
                 progressBar.setVisibility(View.GONE);
-                userAdapter=new UserAdapter(getContext(),mUsers,true);
+                userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

@@ -16,6 +16,7 @@ public class OreoNotification extends ContextWrapper {
 
     private static final String CHANNEL_ID = "com.example.buysellrent";
     private static final String CHANNEL_NAME = "buysellrent";
+    private static final int importance = NotificationManager.IMPORTANCE_HIGH;
     private NotificationManager notificationManager;
 
     public OreoNotification(Context base) {
@@ -29,9 +30,9 @@ public class OreoNotification extends ContextWrapper {
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
 
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
         channel.enableLights(true);
-        channel.enableVibration(true);
+        channel.setVibrationPattern(new long[0]);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
         getManager().createNotificationChannel(channel);

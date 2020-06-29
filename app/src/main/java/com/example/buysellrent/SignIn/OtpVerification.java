@@ -57,11 +57,10 @@ public class OtpVerification extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String code = editText.getText().toString().trim();
-                if(code.isEmpty() || code.length() < 6) {
+                if (code.isEmpty() || code.length() < 6) {
                     editText.setError("Enter the valid code.");
                     editText.requestFocus();
-                }
-                else{
+                } else {
                     verifyCode(code);
                 }
             }
@@ -84,31 +83,36 @@ public class OtpVerification extends AppCompatActivity {
 
     private void signIn(PhoneAuthCredential credential) {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if(firebaseUser == null) {
+        if (firebaseUser == null) {
             mAuth.signInWithCredential(credential)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                updateUI(firebaseUser);
+                                if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                    updateUI(firebaseUser);
+                                } else {
+                                    Intent intent = new Intent(OtpVerification.this, startScreen.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else {
                                 //flag with getMessage
                                 Toast.makeText(OtpVerification.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-        }
-        else{
+        } else {
             mAuth.getCurrentUser().linkWithCredential(credential)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 FirebaseUser firebaseUser1 = FirebaseAuth.getInstance().getCurrentUser();
                                 link(firebaseUser1);
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(OtpVerification.this, task.getException().getMessage(),
                                         Toast.LENGTH_LONG).show();
                             }
@@ -126,11 +130,10 @@ public class OtpVerification extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             startActivity(new Intent(OtpVerification.this, EditProfile.class));
                             finish();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(OtpVerification.this, task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -151,7 +154,7 @@ public class OtpVerification extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Intent intent = new Intent(OtpVerification.this, startScreen.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -175,7 +178,7 @@ public class OtpVerification extends AppCompatActivity {
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             verificationCode = s;
         }
@@ -183,7 +186,7 @@ public class OtpVerification extends AppCompatActivity {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
-            if(code != null) {
+            if (code != null) {
                 verifyCode(code);
             }
         }
