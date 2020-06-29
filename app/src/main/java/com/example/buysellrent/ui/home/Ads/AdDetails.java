@@ -1,6 +1,7 @@
 package com.example.buysellrent.ui.home.Ads;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,8 +40,12 @@ public class AdDetails extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager specsPager;
     Button sendMessage;
+    Button call;
     private int dotscount;
     private String sellerId;
+    private String phoneNum;
+    private String specifications;
+    private String description;
     private ImageView[] dots;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,14 @@ public class AdDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(AdDetails.this, MessageActivity.class);
                 intent.putExtra("userid",sellerId);
+                startActivity(intent);
+            }
+        });
+        call = (Button) findViewById(R.id.call);
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null));
                 startActivity(intent);
             }
         });
@@ -83,6 +96,9 @@ public class AdDetails extends AppCompatActivity {
                 adTitle.setText(dataSnapshot.child("title").getValue(String.class));
                 adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
                 sellerId = dataSnapshot.child("sellerId").getValue(String.class);
+                phoneNum = dataSnapshot.child("number").getValue(String.class);
+//                specifications = dataSnapshot.child("specifications").getValue(String.class);
+//                description = dataSnapshot.child("description").getValue(String.class);
             }
 
             @Override

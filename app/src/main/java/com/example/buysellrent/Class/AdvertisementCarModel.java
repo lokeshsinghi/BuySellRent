@@ -1,18 +1,5 @@
 package com.example.buysellrent.Class;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
 public class AdvertisementCarModel {
 
     private String AdId;
@@ -25,12 +12,13 @@ public class AdvertisementCarModel {
     private String Title;
     private String Desc;
     private String Fuel;
+    private String number;
     private long price;
     private boolean accepted;
     private int imgCount;
 
 
-    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price,String category) {
+    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price, String category, String number) {
         AdId="Unknown";
         SellerId="Unknown";
         Brand = brand;
@@ -44,9 +32,18 @@ public class AdvertisementCarModel {
         this.price=price;
         this.category=category;
         imgCount=0;
+        this.number=number;
     }
 
     public AdvertisementCarModel(){}
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String getAdId() {
         return AdId;

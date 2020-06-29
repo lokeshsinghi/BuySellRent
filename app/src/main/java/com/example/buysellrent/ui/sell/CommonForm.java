@@ -58,6 +58,7 @@ public class CommonForm extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button images_next;
     private EditText price_ad;
+    private EditText phone_num;
     private String AdId;
     private int i;
     private TextView locationText;
@@ -69,6 +70,7 @@ public class CommonForm extends AppCompatActivity {
         bitmaps = new ArrayList<Bitmap>();
         addImages = (ImageView)findViewById(R.id.addImages);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerAdImages);
+        phone_num = (EditText) findViewById(R.id.phone);
         layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         images_next=findViewById(R.id.ad_image_next);
@@ -110,6 +112,7 @@ public class CommonForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 long price = Long.parseLong(price_ad.getText().toString());
+                String number = "+977" + phone_num.getText().toString().trim();
 
                 if (price >= 100&&price <=10000000) {
 
@@ -131,7 +134,7 @@ public class CommonForm extends AppCompatActivity {
 
                         AdId = UUID.randomUUID().toString();
 
-                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category);
+                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category,number);
 
 
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -139,6 +142,7 @@ public class CommonForm extends AppCompatActivity {
                         advertisementCarModel.setSellerId(Uid);
                         advertisementCarModel.setAdId(AdId);
                         advertisementCarModel.setImgCount(imageList.size());
+                        advertisementCarModel.setNumber(number);
 
                         for (Uri a : imageList) {
 
