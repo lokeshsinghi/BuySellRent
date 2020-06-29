@@ -44,7 +44,6 @@ public class AdDetails extends AppCompatActivity {
     private int dotscount;
     private String sellerId;
     private String phoneNum;
-    private String specifications;
     private String description;
     private ImageView[] dots;
     @Override
@@ -53,6 +52,7 @@ public class AdDetails extends AppCompatActivity {
         setContentView(R.layout.activity_ad_details);
         adImages = (ViewPager)findViewById(R.id.adImages);
         sendMessage = (Button) findViewById(R.id.send_message);
+
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +82,6 @@ public class AdDetails extends AppCompatActivity {
         dots = new ImageView[dotscount];
         tabLayout = findViewById(R.id.specs_tab);
         specsPager = findViewById(R.id.specs_pager);
-        setUpViewPager(specsPager);
         tabLayout.setupWithViewPager(specsPager);
         final TextView adTitle = (TextView) findViewById(R.id.adTitle);
         final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
@@ -95,10 +94,10 @@ public class AdDetails extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 adTitle.setText(dataSnapshot.child("title").getValue(String.class));
                 adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
+                description = dataSnapshot.child("desc").getValue(String.class);
                 sellerId = dataSnapshot.child("sellerId").getValue(String.class);
                 phoneNum = dataSnapshot.child("number").getValue(String.class);
-//                specifications = dataSnapshot.child("specifications").getValue(String.class);
-//                description = dataSnapshot.child("description").getValue(String.class);
+                setUpViewPager(specsPager);
             }
 
             @Override
@@ -141,7 +140,7 @@ public class AdDetails extends AppCompatActivity {
     private void setUpViewPager(ViewPager specsPager) {
         SectionPagerAdapter specsPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(),BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         specsPagerAdapter.addFragment(new SpecsFragment(),"SPECIFICATIONS");
-        specsPagerAdapter.addFragment(new DescriptionFragment(),"DESCRIPTION");
+        specsPagerAdapter.addFragment(new DescriptionFragment(description),"DESCRIPTION");
         specsPager.setAdapter(specsPagerAdapter);
     }
 

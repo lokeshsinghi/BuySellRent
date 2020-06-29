@@ -8,8 +8,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/description"
         android:text="Description Fragment"
-        android:layout_centerInParent="true"
-        android:textSize="30dp"/>
+        android:textSize="16sp"/>
 
 </RelativeLayout>

@@ -128,7 +128,7 @@ public class CommonForm extends AppCompatActivity {
                         int Driven = bundle.getInt("driven");
                         String transmission = bundle.getString("transmission");
                         String Title = bundle.getString("title");
-                        String Desc = bundle.getString("desc");
+                        String Desc = bundle.getString("description");
                         String Fuel = bundle.getString("fuel");
                         String category=bundle.getString("category");
 
