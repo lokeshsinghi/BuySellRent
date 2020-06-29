@@ -11,21 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.home.Ads.FullScreenAdImage;
+
+import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
     private Context context;
+    private String adId;
     private LayoutInflater layoutInflater;
-    private Integer[] images = {R.drawable.slide1,R.drawable.slide2,R.drawable.slide3};
+    private ArrayList<String> images = new ArrayList<String >();
 
-    public ViewPagerAdapter(Context context){
+    public ViewPagerAdapter(Context context,String adId,ArrayList<String> images){
+        this.adId = adId;
         this.context = context;
+        this.images = images;
     }
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -38,18 +44,20 @@ public class ViewPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.adimage_layout,null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
+        Glide.with(context)
+                .load(images.get(position))
+                .into(imageView);
 
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(int i=0; i < images.length; i++){
+                for(int i=0; i < images.size(); i++){
                     if(position == i){
 //                        Toast.makeText(context, "Image"+i+" clicked",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, FullScreenAdImage.class);
 //                        Uri uri = Uri.parse("android.resource://com.example.buysellrent/"+images[position]);
-                        intent.putExtra("fsImage",images[position]);
+                        intent.putExtra("fsImage",images.get(position));
                         context.startActivity(intent);
                     }
                 }
@@ -66,6 +74,4 @@ public class ViewPagerAdapter extends PagerAdapter {
         View view = (View) object;
         vp.removeView(view);
     }
-
-
 }

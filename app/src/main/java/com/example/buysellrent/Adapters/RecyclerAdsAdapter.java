@@ -31,12 +31,11 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     private static final String TAG = "RecyclerViewAdapter";
 
     ArrayList<AdvertisementCarModel> ads = new ArrayList<>();
-    //private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
 
     public RecyclerAdsAdapter( Context mContext,ArrayList<AdvertisementCarModel> ads) {
         this.ads = ads;
-        //this.mImageUrls = mImageUrls;
         this.mContext = mContext;
     }
 
@@ -73,7 +72,9 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             @Override
             public void onClick(View view)  {
                 Log.d(TAG, "onClick: Clicked on"+ ads.get(position));
+                String adId = ads.get(position).getAdId();
                 Intent intent = new Intent(mContext, AdDetails.class);
+                intent.putExtra("adId",adId);
                 mContext.startActivity(intent);
             }
         });

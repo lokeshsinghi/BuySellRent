@@ -1,9 +1,13 @@
 package com.example.buysellrent.ui.home.Ads;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -12,7 +16,15 @@ import com.example.buysellrent.Adapter.SectionPagerAdapter;
 import com.example.buysellrent.Adapters.ViewPagerAdapter;
 import com.example.buysellrent.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.fabiomsr.moneytextview.MoneyTextView;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +44,30 @@ public class AdDetails extends AppCompatActivity {
         setContentView(R.layout.activity_ad_details);
         adImages = (ViewPager)findViewById(R.id.adImages);
         sliderDotspanel = (LinearLayout) findViewById(R.id.sliderDots);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        Intent intent = getIntent();
+        String adId = intent.getStringExtra("adId");
+
+        final ArrayList<String> images = new ArrayList<>();
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AdImages").child(adId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int n = (int) dataSnapshot.getChildrenCount();
+                for(int i = 1; i <= n; i++){
+                    images.add(dataSnapshot.child("image"+i).getValue(String.class));
+                    Log.d("TAG", "Okay");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        images.add("https://firebasestorage.googleapis.com/v0/b/buysellrent-37ba8.appspot.com/o/ad_uploads%2F1593181077382.jpg?alt=media&token=fe5dd3f2-c03d-429e-be68-1d1b91d46f01");
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,adId,images);
         adImages.setAdapter(viewPagerAdapter);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(),2000,4000);
@@ -42,6 +77,24 @@ public class AdDetails extends AppCompatActivity {
         specsPager = findViewById(R.id.specs_pager);
         setUpViewPager(specsPager);
         tabLayout.setupWithViewPager(specsPager);
+        final TextView adTitle = (TextView) findViewById(R.id.adTitle);
+        final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
+
+
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Ads").child(adId);
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                adTitle.setText(dataSnapshot.child("title").getValue(String.class));
+                adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         for(int i=0; i < dotscount; i++){
             dots[i] = new ImageView(this);
@@ -82,7 +135,6 @@ public class AdDetails extends AppCompatActivity {
     }
 
     public class MyTimerTask extends TimerTask{
-
         @Override
         public void run() {
             AdDetails.this.runOnUiThread(new Runnable() {
@@ -100,9 +152,5 @@ public class AdDetails extends AppCompatActivity {
                 }
             });
         }
-
     }
-
-
-
 }
