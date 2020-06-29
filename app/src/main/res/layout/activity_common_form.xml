@@ -1,53 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:weightSum="100"
     tools:context=".ui.sell.CommonForm"
     android:layout_gravity="center"
     android:orientation="vertical">
-    <LinearLayout
+    <EditText
+        android:id="@+id/price_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:layout_marginEnd="50dp"
-        android:orientation="horizontal"
-        android:id="@+id/price_layout">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price *"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/price_ad"
-            android:textColor="#000000"
-            android:inputType="number"
-            android:paddingLeft="5dp"
-            android:hint=" NPR "/>
-
-    </LinearLayout>
-
+        android:layout_height="0dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_weight="8"
+        android:background="@drawable/custom_button"
+        android:ems="10"
+        android:hint="Price* "
+        android:inputType="number"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/quantum_grey"
+        android:textSize="14sp" />
     <ImageView
         android:id="@+id/addImages"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="15"
         android:clickable="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:paddingTop="10dp"
-        android:layout_below="@id/price_layout"
         android:src="@drawable/ic_add_image" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="6"
         android:text="Insert more product images for best results"
         android:layout_gravity="center"
         android:layout_below="@id/addImages"
@@ -58,7 +51,8 @@
         android:layout_marginBottom="5dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="35"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_below="@+id/textrec"
@@ -70,17 +64,88 @@
         android:id="@+id/recyclerAdImages">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_marginLeft="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Your contact information"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:id="@+id/selectLocation"
+        android:textColor="@color/textPrimary"
+        android:textStyle="italic"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawablePadding="10dp"
+        android:layout_marginLeft="30dp"
+        android:text="Select your Location"
+        android:clickable="false"/>
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:weightSum="100"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/custom_button"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="16"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/quantum_grey"
+                android:text="@string/code" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:background="#c0c0c0"/>
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="82"
+                android:textSize="15sp"
+                android:ems="10"
+                android:layout_marginLeft="10dp"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/quantum_grey" />
+
+        </LinearLayout>
 
     <Button
         android:id="@+id/ad_image_next"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_next"
         android:text="Next"
-
-
         android:textColor="@color/colorPrimary" />
 
-</RelativeLayout>
+</LinearLayout>

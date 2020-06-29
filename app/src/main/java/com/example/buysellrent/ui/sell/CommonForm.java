@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,17 +27,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.buysellrent.Adapter.AdvertisementAdapter;
-import com.example.buysellrent.Adapter.UserAdapter;
 import com.example.buysellrent.Class.AdvertisementCarModel;
-import com.example.buysellrent.Notification.Data;
 import com.example.buysellrent.R;
+import com.example.buysellrent.ui.home.selectLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -49,7 +45,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class CommonForm extends AppCompatActivity {
@@ -65,6 +60,7 @@ public class CommonForm extends AppCompatActivity {
     private EditText price_ad;
     private String AdId;
     private int i;
+    private TextView locationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +69,17 @@ public class CommonForm extends AppCompatActivity {
         bitmaps = new ArrayList<Bitmap>();
         addImages = (ImageView)findViewById(R.id.addImages);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerAdImages);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         images_next=findViewById(R.id.ad_image_next);
+        locationText = findViewById(R.id.selectLocation);
+        locationText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CommonForm.this, selectLocation.class);
+                startActivity(intent);
+            }
+        });
         price_ad=findViewById(R.id.price_ad);
         imageList=new ArrayList<Uri>();
         i=0;
