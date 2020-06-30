@@ -38,20 +38,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <org.fabiomsr.moneytextview.MoneyTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:baseTextSize="20sp"
-        android:id="@+id/adPrice"
-        android:layout_marginTop="6dp"
-        android:paddingStart="24dp"
-        app:symbol="‎रू"
-        app:decimalSeparator="."
-        app:format="#"
-        app:symbolGravity="start"
-        app:amount="3400000"
-        app:symbolMargin="3dp">
-    </org.fabiomsr.moneytextview.MoneyTextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/textPrimary"
+            android:id="@+id/adPrice"
+            android:layout_marginTop="6dp"
+            android:paddingStart="12dp"/>
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"

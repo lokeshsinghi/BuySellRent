@@ -51,18 +51,13 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="2dp"
                 />
-            <org.fabiomsr.moneytextview.MoneyTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/adPrice"
+                android:textColor="@color/textPrimary"
                 android:layout_height="wrap_content"
-                app:baseTextSize="16sp"
-                android:layout_marginTop="10dp"
-                app:symbol="‎रू"
-                app:decimalSeparator="."
-                app:symbolGravity="start"
-                app:amount="5400"
-                app:symbolMargin="3sp">
-            </org.fabiomsr.moneytextview.MoneyTextView>
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

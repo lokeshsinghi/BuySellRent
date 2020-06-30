@@ -119,7 +119,7 @@ public class CommonForm extends AppCompatActivity {
                         Toast.makeText(CommonForm.this, "Please insert three images to continue", Toast.LENGTH_LONG).show();
                     }
                     else {
-
+                        String Price = price + "";
                         Bundle bundle = getIntent().getExtras();
                         final String Brand = bundle.getString("brand");
                         final int Year = bundle.getInt("year");
@@ -130,7 +130,7 @@ public class CommonForm extends AppCompatActivity {
                         final String Fuel = bundle.getString("fuel");
                         final String category=bundle.getString("category");
                         AdId = UUID.randomUUID().toString();
-                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category,number,address);
+                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,Price,category,number,address);
 
 
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

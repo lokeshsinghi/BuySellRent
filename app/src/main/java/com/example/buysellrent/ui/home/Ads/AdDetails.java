@@ -25,8 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.fabiomsr.moneytextview.MoneyTextView;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,7 +82,7 @@ public class AdDetails extends AppCompatActivity {
         specsPager = findViewById(R.id.specs_pager);
         tabLayout.setupWithViewPager(specsPager);
         final TextView adTitle = (TextView) findViewById(R.id.adTitle);
-        final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
+        final TextView adPrice = (TextView) findViewById(R.id.adPrice);
         final TextView adLocation = (TextView) findViewById(R.id.adLocation);
 
 
@@ -94,7 +92,7 @@ public class AdDetails extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 adTitle.setText(dataSnapshot.child("title").getValue(String.class));
-                adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
+                adPrice.setText(rupeeFormat(dataSnapshot.child("price").getValue(String.class)));
                 adLocation.setText(dataSnapshot.child("address").getValue(String.class));
                 description = dataSnapshot.child("desc").getValue(String.class);
                 sellerId = dataSnapshot.child("sellerId").getValue(String.class);
@@ -164,5 +162,22 @@ public class AdDetails extends AppCompatActivity {
                 }
             });
         }
+    }
+    public static String rupeeFormat(String value){
+        value=value.replace(",","");
+        char lastDigit=value.charAt(value.length()-1);
+        String result = "";
+        int len = value.length()-1;
+        int nDigits = 0;
+        for (int i = len - 1; i >= 0; i--)
+        {
+            result = value.charAt(i) + result;
+            nDigits++;
+            if (((nDigits % 2) == 0) && (i > 0))
+            {
+                result = "," + result;
+            }
+        }
+        return "रू "+(result+lastDigit);
     }
 }

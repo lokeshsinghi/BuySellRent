@@ -14,13 +14,13 @@ public class AdvertisementCarModel {
     private String Fuel;
     private String number;
     private String address;
-    private long price;
+    private String price;
     private boolean accepted;
     private int imgCount;
 
 
 
-    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, long price, String category, String number, String address) {
+    public AdvertisementCarModel(String brand, int year, int driven, String transmission, String title, String desc, String fuel, String price, String category, String number, String address) {
         AdId="Unknown";
         SellerId="Unknown";
         Brand = brand;
@@ -85,11 +85,11 @@ public class AdvertisementCarModel {
     }
 
 
-    public long getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

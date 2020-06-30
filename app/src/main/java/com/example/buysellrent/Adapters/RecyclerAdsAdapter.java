@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.fabiomsr.moneytextview.MoneyTextView;
-
 import java.util.ArrayList;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder>{
@@ -69,7 +67,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             }
         });
         holder.adTitle.setText(ads.get(position).getTitle());
-        holder.adPrice.setAmount(ads.get(position).getPrice());
+        holder.adPrice.setText(rupeeFormat(ads.get(position).getPrice()));
         holder.adLocation.setText(ads.get(position).getAddress());
         holder.adLayout.setOnClickListener(new View.OnClickListener()   {
             @Override
@@ -111,7 +109,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         ImageView adImage;
         TextView adTitle;
         TextView adLocation;
-        MoneyTextView adPrice;
+        TextView adPrice;
         LinearLayout adLayout;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -121,5 +119,22 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             adLocation = itemView.findViewById(R.id.adLocation);
             adLayout = itemView.findViewById(R.id.adLayout);
         }
+    }
+    public static String rupeeFormat(String value){
+        value=value.replace(",","");
+        char lastDigit=value.charAt(value.length()-1);
+        String result = "";
+        int len = value.length()-1;
+        int nDigits = 0;
+        for (int i = len - 1; i >= 0; i--)
+        {
+            result = value.charAt(i) + result;
+            nDigits++;
+            if (((nDigits % 2) == 0) && (i > 0))
+            {
+                result = "," + result;
+            }
+        }
+        return "रू "+(result+lastDigit);
     }
 }
