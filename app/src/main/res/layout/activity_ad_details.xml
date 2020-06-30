@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/quantum_grey"
+        android:id="@+id/adLocation"
         android:textSize="16sp"
         android:paddingLeft="8dp"
         android:text="New Road, Kathmandu"

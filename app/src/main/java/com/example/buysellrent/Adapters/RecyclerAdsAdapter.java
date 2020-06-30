@@ -68,6 +68,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.adTitle.setText(ads.get(position).getTitle());
         holder.adPrice.setAmount(ads.get(position).getPrice());
+        holder.adLocation.setText(ads.get(position).getAddress());
         holder.adLayout.setOnClickListener(new View.OnClickListener()   {
             @Override
             public void onClick(View view)  {
@@ -107,14 +108,15 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
         ImageView adImage;
         TextView adTitle;
-        MoneyTextView adPrice;
         TextView adLocation;
+        MoneyTextView adPrice;
         LinearLayout adLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             adImage = itemView.findViewById(R.id.adImage);
             adTitle = itemView.findViewById(R.id.adTitle);
             adPrice = itemView.findViewById(R.id.adPrice);
+            adLocation = itemView.findViewById(R.id.adLocation);
             adLayout = itemView.findViewById(R.id.adLayout);
         }
     }

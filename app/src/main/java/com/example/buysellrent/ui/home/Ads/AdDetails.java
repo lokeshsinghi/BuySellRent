@@ -85,6 +85,7 @@ public class AdDetails extends AppCompatActivity {
         tabLayout.setupWithViewPager(specsPager);
         final TextView adTitle = (TextView) findViewById(R.id.adTitle);
         final MoneyTextView adPrice = (MoneyTextView) findViewById(R.id.adPrice);
+        final TextView adLocation = (TextView) findViewById(R.id.adLocation);
 
 
 
@@ -94,6 +95,7 @@ public class AdDetails extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 adTitle.setText(dataSnapshot.child("title").getValue(String.class));
                 adPrice.setAmount(dataSnapshot.child("price").getValue(float.class));
+                adLocation.setText(dataSnapshot.child("address").getValue(String.class));
                 description = dataSnapshot.child("desc").getValue(String.class);
                 sellerId = dataSnapshot.child("sellerId").getValue(String.class);
                 phoneNum = dataSnapshot.child("number").getValue(String.class);

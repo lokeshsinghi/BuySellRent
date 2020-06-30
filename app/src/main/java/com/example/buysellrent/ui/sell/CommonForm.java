@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buysellrent.Adapter.AdvertisementAdapter;
 import com.example.buysellrent.Class.AdvertisementCarModel;
 import com.example.buysellrent.R;
-import com.example.buysellrent.ui.home.selectLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +59,7 @@ public class CommonForm extends AppCompatActivity {
     private EditText price_ad;
     private EditText phone_num;
     private String AdId;
+    private String address;
     private int i;
     private TextView locationText;
 
@@ -78,10 +78,11 @@ public class CommonForm extends AppCompatActivity {
         locationText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CommonForm.this, selectLocation.class);
-                startActivity(intent);
+                Intent intent = new Intent(CommonForm.this, SelectAdLocation.class);
+                startActivityForResult(intent,2);
             }
         });
+
         price_ad=findViewById(R.id.price_ad);
         imageList=new ArrayList<Uri>();
         i=0;
@@ -103,9 +104,6 @@ public class CommonForm extends AppCompatActivity {
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
                 intent.setType("image/*");
                 startActivityForResult(intent,1);
-
-
-
             }
         });
         images_next.setOnClickListener(new View.OnClickListener() {
@@ -121,20 +119,18 @@ public class CommonForm extends AppCompatActivity {
                         Toast.makeText(CommonForm.this, "Please insert three images to continue", Toast.LENGTH_LONG).show();
                     }
                     else {
+
                         Bundle bundle = getIntent().getExtras();
-
-                        String Brand = bundle.getString("brand");
-                        int Year = bundle.getInt("year");
-                        int Driven = bundle.getInt("driven");
-                        String transmission = bundle.getString("transmission");
-                        String Title = bundle.getString("title");
-                        String Desc = bundle.getString("description");
-                        String Fuel = bundle.getString("fuel");
-                        String category=bundle.getString("category");
-
+                        final String Brand = bundle.getString("brand");
+                        final int Year = bundle.getInt("year");
+                        final int Driven = bundle.getInt("driven");
+                        final String transmission = bundle.getString("transmission");
+                        final String Title = bundle.getString("title");
+                        final String Desc = bundle.getString("description");
+                        final String Fuel = bundle.getString("fuel");
+                        final String category=bundle.getString("category");
                         AdId = UUID.randomUUID().toString();
-
-                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category,number);
+                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,price,category,number,address);
 
 
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -242,6 +238,12 @@ public class CommonForm extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 2 && resultCode == RESULT_OK) {
+            address = data.getStringExtra("location");
+            locationText.setText(address);
+        }
+
         if (requestCode == 1 && resultCode == RESULT_OK) {
             final ImageView imageView = findViewById(R.id.imageView);
 

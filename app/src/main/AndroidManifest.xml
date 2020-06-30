@@ -22,6 +22,7 @@
         <activity android:name=".ui.chat.FullScreenView" />
         <activity android:name=".ui.home.Ads.FullScreenAdImage" />
         <activity android:name=".ui.home.Ads.AdDetails" />
+        <activity android:name=".ui.sell.SelectAdLocation"/>
 
         <uses-library
             android:name="org.apache.http.legacy"
