@@ -29,7 +29,6 @@ import com.example.buysellrent.Adapters.RecyclerViewAdapter;
 import com.example.buysellrent.Class.AdvertisementCarModel;
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.home.Ads.AdDetails;
-import com.example.buysellrent.ui.sell.VerificationAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -149,7 +148,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getAds() {
-
+        ads.clear();
         referenceAdvertisements = FirebaseDatabase.getInstance().getReference().child("Ads");
         referenceAdvertisements.addValueEventListener(new ValueEventListener() {
             @Override
