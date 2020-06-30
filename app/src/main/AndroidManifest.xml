@@ -16,13 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.Ads.AdsByCategory"></activity>
         <activity android:name=".ui.sell.VerificationAd" />
         <activity android:name=".ui.sell.CommonForm" />
         <activity android:name=".ui.sell.forms.CarForm" />
         <activity android:name=".ui.chat.FullScreenView" />
         <activity android:name=".ui.home.Ads.FullScreenAdImage" />
         <activity android:name=".ui.home.Ads.AdDetails" />
-        <activity android:name=".ui.sell.SelectAdLocation"/>
+        <activity android:name=".ui.sell.SelectAdLocation" />
 
         <uses-library
             android:name="org.apache.http.legacy"
