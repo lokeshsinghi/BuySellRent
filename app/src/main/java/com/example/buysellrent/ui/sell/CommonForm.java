@@ -59,9 +59,10 @@ public class CommonForm extends AppCompatActivity {
     private EditText price_ad;
     private EditText phone_num;
     private String AdId;
-    private String address;
+    private String address="unkown";
     private int i;
     private TextView locationText;
+    private int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,128 +110,184 @@ public class CommonForm extends AppCompatActivity {
         images_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long price = Long.parseLong(price_ad.getText().toString());
+
+                Bundle bundle = getIntent().getExtras();
+                AdvertisementModel advertisementModel = null;
+
+
+                long price;
+
+                if (!price_ad.getText().toString().equals(""))
+                    price = Long.parseLong(price_ad.getText().toString());
+                else
+                    price = 0;
                 String number = "+977" + phone_num.getText().toString().trim();
 
-                if (price >= 100&&price <=10000000) {
 
-                    if (bitmaps.size() < 3) {
+                if (price < 100 || price > 10000000) {
+                    price_ad.setError("Price must be in range of Hundred to Crore !");
+                } else if (bitmaps.size() < 3) {
 
-                        Toast.makeText(CommonForm.this, "Please insert three images to continue", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        String Price = price + "";
-                        Bundle bundle = getIntent().getExtras();
-                        final String Brand = bundle.getString("brand");
-                        final int Year = bundle.getInt("year");
-                        final int Driven = bundle.getInt("driven");
-                        final String transmission = bundle.getString("transmission");
-                        final String Title = bundle.getString("title");
-                        final String Desc = bundle.getString("description");
-                        final String Fuel = bundle.getString("fuel");
-                        final String category=bundle.getString("category");
-                        AdId = UUID.randomUUID().toString();
-                        AdvertisementCarModel advertisementCarModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel,Price,category,number,address);
+                    Toast.makeText(CommonForm.this, "Please insert three images to continue", Toast.LENGTH_LONG).show();
+                } else if (address.equals("unknown")) {
+                    Toast.makeText(CommonForm.this, "Please select the location", Toast.LENGTH_LONG).show();
+                } else if (phone_num.getText().toString().length() < 10) {
+                    Toast.makeText(CommonForm.this, "Please enter valid mobile number", Toast.LENGTH_LONG).show();
 
+                } else if (bundle.getString("category").equals("Cars")) {
 
-                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        String Uid = firebaseUser.getUid();
-                        advertisementCarModel.setSellerId(Uid);
-                        advertisementCarModel.setAdId(AdId);
-                        advertisementCarModel.setImgCount(imageList.size());
-                        advertisementCarModel.setNumber(number);
+                    flag = 1;
+                    String Price = price + "";
 
-                        for (Uri a : imageList) {
+                    final String Brand = bundle.getString("brand");
+                    final int Year = bundle.getInt("year");
+                    final int Driven = bundle.getInt("driven");
+                    final String transmission = bundle.getString("transmission");
+                    final String Title = bundle.getString("title");
+                    final String Desc = bundle.getString("description");
+                    final String Fuel = bundle.getString("fuel");
+                    final String category = bundle.getString("category");
+                    AdId = UUID.randomUUID().toString();
+                    advertisementModel = new AdvertisementCarModel(Brand, Year, Driven, transmission, Title, Desc, Fuel, Price, category, number, address);
+                } else if (bundle.getString("category").equals("Bikes")) {
 
-                            final ProgressDialog progressDialog = new ProgressDialog(CommonForm.this);
-                            progressDialog.setTitle("Uploading "+a);
-                            progressDialog.show();
+                    flag = 2;
+                    String Price = price + "";
 
-                            final StorageReference profileRef = FirebaseStorage.getInstance().getReference("ad_uploads").child(System.currentTimeMillis() + "." + getFileExtension(a));
-                            profileRef.putFile(a)
-                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                                            progressDialog.dismiss();
-                                            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                @Override
-                                                public void onSuccess(Uri uri) {
-                                                    Log.e("images",uri.toString());
-                                                    imageListFinal.add(uri.toString());
-                                                    i++;
-                                                    {
-
-                                                        String img="image"+i;
-                                                        FirebaseDatabase.getInstance().getReference("AdImages").child(AdId).child(img).setValue(uri.toString());
-                                                        //Log.e("images",a.toString());
-
-                                                    }
-                                                    //Toast.makeText(CommonForm.this, "Success", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            });
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception exception) {
-
-                                            progressDialog.dismiss();
-                                            Toast.makeText(CommonForm.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    })
-                                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                            //calculating progress percentage
-                                            double progress=0;
-
-                                            progress = (double) (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                                            //displaying percentage in progress dialog
-                                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-
-                                        }
-
-                                    });
-                        }
-
-
-
-
-                        FirebaseDatabase.getInstance().getReference("Ads").child(AdId)
-                                .setValue(advertisementCarModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(CommonForm.this, "Ad sent for Verification", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(CommonForm.this, "Error", Toast.LENGTH_LONG).show();
-                                }
-
-//                                String imgCount=""+imageListFinal.size();
-//                                FirebaseDatabase.getInstance().getReference("CarAds").child(randId).child("ImageCount").setValue(imgCount);
-                                Intent intent = new Intent(CommonForm.this, VerificationAd.class);
-                                startActivity(intent);
-
-                            }
-
-
-                        });
-
-
-                    }
+                    final String Brand = bundle.getString("brand");
+                    final int Year = bundle.getInt("year");
+                    final int Driven = bundle.getInt("driven");
+                    final String Title = bundle.getString("title");
+                    final String Desc = bundle.getString("description");
+                    final String category = bundle.getString("category");
+                    AdId = UUID.randomUUID().toString();
+                    advertisementModel = new AdvertisementBikeModel(Brand, Year, Driven, Title, Desc, Price, category, number, address);
 
                 }
                 else {
-                    price_ad.setError("Price must be in range of Hundred to Crore !");
+                    flag=3;
+                    String Price = price + "";
+
+                    String Brand = bundle.getString("brand");
+                    if(Brand.equals(""))
+                        Brand="NOT BRANDED";
+                    final String Title = bundle.getString("title");
+                    final String Desc = bundle.getString("description");
+                    final String category = bundle.getString("category");
+                    AdId = UUID.randomUUID().toString();
+                    advertisementModel = new AdvertisementExtraModel(Brand,Title, Desc, Price, category, number, address);
+                }
+                if (flag == 1) {
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String Uid = firebaseUser.getUid();
+                    ((AdvertisementCarModel)advertisementModel).setSellerId(Uid);
+                    ((AdvertisementCarModel)advertisementModel).setAdId(AdId);
+                    ((AdvertisementCarModel)advertisementModel).setImgCount(imageList.size());
+                    ((AdvertisementCarModel)advertisementModel).setNumber(number);
+                }
+                else if(flag==2){
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String Uid = firebaseUser.getUid();
+                    ((AdvertisementBikeModel)advertisementModel).setSellerId(Uid);
+                    ((AdvertisementBikeModel)advertisementModel).setAdId(AdId);
+                    ((AdvertisementBikeModel)advertisementModel).setImgCount(imageList.size());
+                    ((AdvertisementBikeModel)advertisementModel).setNumber(number);
+                }
+                else{
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String Uid = firebaseUser.getUid();
+                    ((AdvertisementExtraModel)advertisementModel).setSellerId(Uid);
+                    ((AdvertisementExtraModel)advertisementModel).setAdId(AdId);
+                    ((AdvertisementExtraModel)advertisementModel).setImgCount(imageList.size());
+                    ((AdvertisementExtraModel)advertisementModel).setNumber(number);
+                }
+
+                if(flag>0){
+                    for (Uri a : imageList) {
+
+                        final ProgressDialog progressDialog = new ProgressDialog(CommonForm.this);
+                        progressDialog.setTitle("Uploading " + a);
+                        progressDialog.show();
+
+                        final StorageReference profileRef = FirebaseStorage.getInstance().getReference("ad_uploads").child(System.currentTimeMillis() + "." + getFileExtension(a));
+                        profileRef.putFile(a)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                        progressDialog.dismiss();
+                                        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.e("images", uri.toString());
+                                                imageListFinal.add(uri.toString());
+                                                i++;
+                                                {
+
+                                                    String img = "image" + i;
+                                                    FirebaseDatabase.getInstance().getReference("AdImages").child(AdId).child(img).setValue(uri.toString());
+                                                    //Log.e("images",a.toString());
+
+                                                }
+                                                //Toast.makeText(CommonForm.this, "Success", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        });
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+
+                                        progressDialog.dismiss();
+                                        Toast.makeText(CommonForm.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                        //calculating progress percentage
+                                        double progress = 0;
+
+                                        progress = (double) (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                        //displaying percentage in progress dialog
+                                        progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+
+                                    }
+
+                                });
+                    }
+
+
+                    FirebaseDatabase.getInstance().getReference("Ads").child(AdId)
+                            .setValue(advertisementModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(CommonForm.this, "Ad sent for Verification", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(CommonForm.this, "Error", Toast.LENGTH_LONG).show();
+                            }
+
+//                                String imgCount=""+imageListFinal.size();
+//                                FirebaseDatabase.getInstance().getReference("CarAds").child(randId).child("ImageCount").setValue(imgCount);
+                            Intent intent = new Intent(CommonForm.this, VerificationAd.class);
+                            startActivity(intent);
+
+                        }
+
+
+                    });
+
+
                 }
 
 
-
             }
+
+
 
         });
     }
@@ -241,6 +298,7 @@ public class CommonForm extends AppCompatActivity {
 
         if(requestCode == 2 && resultCode == RESULT_OK) {
             address = data.getStringExtra("location");
+
             locationText.setText(address);
         }
 

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/quantum_white_100"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/custom_ad_name"
+            android:text="Unidentified"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:textColor="@color/textPrimary"/>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/underline"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitXY"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/first">
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/second"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/first"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+
+
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Brand *"
+                    android:inputType="textCapWords"
+                    android:textColor="@android:color/black"
+                    />
+
+                <EditText
+                    android:id="@+id/year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/brand"
+                    android:maxLength="3"
+                    android:hint="Year (Age) *"
+                    android:inputType="number"
+                    android:textColor="@android:color/black"
+                    />
+
+                <EditText
+                    android:id="@+id/driven"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/year"
+                    android:hint="KM driven *"
+                    android:maxLength="5"
+                    android:inputType="number"
+                    android:textColor="@android:color/black"
+                    />
+
+
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/ran"
+                    android:layout_height="wrap_content"
+                    android:text="Ad title*"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"
+                    android:layout_below="@+id/driven"/>
+
+                <EditText
+                    android:id="@+id/ad_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    app:autoSizeTextType="none"
+                    android:layout_below="@id/ran"
+                    android:maxLength="70"
+                    android:inputType="textMultiLine"
+                    android:textColor="@android:color/black"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay1"
+                    android:layout_marginTop="-10dp"
+                    android:layout_below="@id/ad_title"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:ems="10"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="12sp"
+                        android:text="Mention the key features of your item (e.g. brand, model, age, type)"
+                        android:textColor="@android:color/black"
+                        />
+
+                    <TextView
+                        android:layout_width="18dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:id="@+id/title_length"
+                        android:ems="10"
+                        android:text="0 / 70"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@android:color/black"
+
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/ran2"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Describe what you are selling *"
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"
+                    android:layout_below="@+id/lay1"/>
+
+                <EditText
+                    android:id="@+id/desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    android:maxLength="4096"
+                    android:layout_below="@id/ran2"
+                    android:inputType="textMultiLine"
+                    android:textColor="@android:color/black"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay2"
+                    android:layout_marginTop="-10dp"
+                    android:layout_below="@id/desc"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.85"
+                        android:ems="10"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"
+                        android:text="Include condition,features and reason for selling"
+                        android:textColor="@android:color/black"
+                        />
+
+                    <TextView
+                        android:id="@+id/desc_length"
+                        android:layout_width="74dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:ems="10"
+                        android:text="0 / 4096"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@android:color/black"
+
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+
+
+
+                <Button
+                    android:id="@+id/ad_form_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_next"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Next"
+
+                    android:layout_below="@id/lay2"/>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>

@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.Ads.AdsByCategory"></activity>
+        <activity android:name=".ui.sell.forms.ExtraForm"></activity>
+        <activity android:name=".ui.sell.forms.BikeForm" />
+        <activity android:name=".ui.home.Ads.AdsByCategory" />
         <activity android:name=".ui.sell.VerificationAd" />
         <activity android:name=".ui.sell.CommonForm" />
         <activity android:name=".ui.sell.forms.CarForm" />

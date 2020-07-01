@@ -54,4 +54,13 @@
     <string name="last_seen">Last seen:</string>
     <string name="type">Type a message</string>
     <string name="noMsg">No Message</string>
+
+    <string-array name="fuel_types">
+
+        <item>Petrol</item>
+        <item>Diesel</item>
+        <item>LPG</item>
+        <item>CNG &amp; Hybrids</item>
+        <item>Electric</item>
+    </string-array>
 </resources>

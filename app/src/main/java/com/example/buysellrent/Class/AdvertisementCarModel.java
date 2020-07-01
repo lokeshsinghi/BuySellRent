@@ -1,6 +1,8 @@
 package com.example.buysellrent.Class;
 
-public class AdvertisementCarModel {
+import com.example.buysellrent.ui.sell.AdvertisementModel;
+
+public class AdvertisementCarModel extends AdvertisementModel {
 
     private String AdId;
     private String SellerId;
