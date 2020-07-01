@@ -126,6 +126,7 @@
                 android:ems="10"
                 android:layout_marginLeft="10dp"
                 android:hint="Phone"
+                android:maxLength="10"
                 android:inputType="phone"
                 android:textColor="@android:color/black"
                 android:background="@android:color/transparent"

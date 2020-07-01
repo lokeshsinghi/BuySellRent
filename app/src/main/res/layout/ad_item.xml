@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="5dp">
 
@@ -12,25 +12,21 @@
         android:id="@+id/ad_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_centerInParent="true"
-
+        android:layout_marginStart="40dp"
         android:paddingBottom="5dp"
         android:src="@drawable/online"
         />
+
 
     <TextView
         android:id="@+id/count_ad"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/ic_baseline_bookmarks_24"
-        android:paddingRight="5dp"
         android:gravity="center"
-
-        android:layout_toStartOf="@+id/ad_image"
+        android:paddingRight="5dp"
         android:text="1 "
-        android:textColor="@color/colorPrimary"/>
-
-
+        android:textColor="@color/colorPrimary" />
 
     <View
         android:layout_width="wrap_content"

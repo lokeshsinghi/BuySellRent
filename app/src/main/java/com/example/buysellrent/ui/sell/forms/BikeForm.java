@@ -1,5 +1,7 @@
 package com.example.buysellrent.ui.sell.forms;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,22 +15,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.buysellrent.R;
 import com.example.buysellrent.ui.sell.CommonForm;
 
-import java.util.ArrayList;
-
-public class CarForm extends AppCompatActivity {
+public class BikeForm extends AppCompatActivity {
 
 
-    private Button man,auto,next;
+    private Button next;
     private TextView category;
     private EditText brand,year,driven,title,desc;
-    private TextView trans,desc_length,title_length;
-    private Spinner spinner;
-    private String Brand,Fuel,Title,Desc,transmission;
+    private TextView desc_length,title_length;
+    private String Brand,Title,Desc;
     private int Year,Driven;
 
     private int flag=0,flag2=1;
@@ -37,13 +34,10 @@ public class CarForm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_form);
+        setContentView(R.layout.activity_bike_form);
         category=findViewById(R.id.custom_ad_name);
-        spinner=findViewById(R.id.spin_fuel);
-        ArrayAdapter<String> myAdapter=new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.fuel_types));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(myAdapter);
+
+
         Bundle bundle=getIntent().getExtras();
         if(bundle.getString("category")!=null){
             category.setText(bundle.getString("category"));
@@ -51,8 +45,7 @@ public class CarForm extends AppCompatActivity {
         }
         else
             category.setText("Unidentified");
-        man=findViewById(R.id.manual);
-        auto=findViewById(R.id.auto);
+
         next=findViewById(R.id.ad_form_next);
 
         brand=findViewById(R.id.brand);
@@ -100,29 +93,8 @@ public class CarForm extends AppCompatActivity {
             }
         });
 
-        man.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                man.setBackgroundResource(R.drawable.background_buttons);
-                man.setTextColor(Color.parseColor("#FFFFFF"));
-                auto.setBackgroundResource(R.drawable.custom_button);
-                auto.setTextColor(Color.parseColor("#000000"));
-                flag=1;
-                transmission="Manual";
-            }
-        });
 
-        auto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auto.setBackgroundResource(R.drawable.background_buttons);
-                auto.setTextColor(Color.parseColor("#FFFFFF"));
-                man.setBackgroundResource(R.drawable.custom_button);
-                man.setTextColor(Color.parseColor("#000000"));
-                flag=1;
-                transmission="Automatic";
-            }
-        });
+
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +102,7 @@ public class CarForm extends AppCompatActivity {
 
                 flag2=1;
                 Brand=brand.getText().toString();
-                Fuel = spinner.getSelectedItem().toString();
+
                 Title=title.getText().toString();
                 Desc=desc.getText().toString();
                 if(year.getText().toString().equals(""))
@@ -156,9 +128,6 @@ public class CarForm extends AppCompatActivity {
                     driven.setError("Enter valid Kilometers!");
                     flag2=0;}else
 
-                if (Fuel.equalsIgnoreCase("")){
-
-                    flag2=0;}else
 
                 if (Title.equalsIgnoreCase("")||Title.length()<10){
                     title.setError("Add appropriate title!");
@@ -166,30 +135,22 @@ public class CarForm extends AppCompatActivity {
 
                 if (Desc.equalsIgnoreCase("")||Desc.length()<10){
                     desc.setError("Minimum 10 characters are required!");
-                    flag2=0;}else
+                    flag2=0;}
 
 
 
 
-                if(flag==0){
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Please Select Transmission Type!",
-                            Toast.LENGTH_LONG);
-                    toast.show();
-                    flag2=0;
-                }else
+                else
                 {
                     final Bundle bundle = new Bundle();
                     bundle.putString("brand",Brand);
                     bundle.putInt("year",Year);
                     bundle.putInt("driven",Driven);
-                    bundle.putString("transmission",transmission);
                     bundle.putString("title",Title);
                     bundle.putString("description",Desc);
-                    bundle.putString("fuel",Fuel);
                     bundle.putString("category",cat);
 
-                    Intent intent = new Intent(CarForm.this, CommonForm.class);
+                    Intent intent = new Intent(BikeForm.this, CommonForm.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

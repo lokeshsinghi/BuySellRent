@@ -17,7 +17,10 @@ import com.bumptech.glide.Glide;
 import com.example.buysellrent.MainActivity;
 import com.example.buysellrent.R;
 import com.example.buysellrent.SignIn.PhoneSignIn;
+import com.example.buysellrent.ui.sell.CommonForm;
+import com.example.buysellrent.ui.sell.forms.BikeForm;
 import com.example.buysellrent.ui.sell.forms.CarForm;
+import com.example.buysellrent.ui.sell.forms.ExtraForm;
 
 import java.util.ArrayList;
 
@@ -61,9 +64,27 @@ public class RecyclerSellCategory extends RecyclerView.Adapter<RecyclerSellCateg
             public void onClick(View view)  {
                 Log.d(TAG, "onClick: Clicked on"+ mNames.get(position));
                 Toast.makeText(mContext, mNames.get(position), Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(mContext, CarForm.class);
-                intent.putExtra("category",mNames.get(position));
-                mContext.startActivity(intent);
+                Intent intent;
+                if(mNames.get(position).equals("Cars")){
+                    intent=new Intent(mContext, CarForm.class);
+                    intent.putExtra("category",mNames.get(position));
+                    mContext.startActivity(intent);
+                }
+                else if(mNames.get(position).equals("Bikes"))
+                {
+                    intent=new Intent(mContext, BikeForm.class);
+                    intent.putExtra("category",mNames.get(position));
+                    mContext.startActivity(intent);
+                }
+                else
+                {
+
+                    intent=new Intent(mContext, ExtraForm.class);
+                    intent.putExtra("category",mNames.get(position));
+                    mContext.startActivity(intent);
+                }
+
+
             }
         });
     }
