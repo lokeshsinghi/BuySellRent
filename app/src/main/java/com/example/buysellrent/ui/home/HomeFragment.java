@@ -103,6 +103,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     //recyclerview of categories
     private void getImages() {
+        mImageUrls.clear();
+        mNames.clear();
         Log.d(TAG, "initImageBitmaps: preparing bitmaps");
 
         mImageUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR1-0NpYZuiCcaFWpHiA0vxxEDQiZISR_8sT7VzTNFsP9fntGJN&usqp=CAU");
