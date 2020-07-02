@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -38,9 +39,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -271,48 +279,80 @@ public class MainActivity extends AppCompatActivity {
 //                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                GUpdateUI(user);
+                                GUpdateUI(user, true);
                             } else {
-                                customProgressBar.dismissDialog();
-                                Intent intent = new Intent(MainActivity.this, startScreen.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                GUpdateUI(user, false);
                             }
                         } else {
                             // If sign in fails, display a message to the user.
-                            GUpdateUI(null);
+                            GUpdateUI(null, true);
                         }
                     }
                 });
     }
 
     //If user is signing in for the first Update database
-    public void GUpdateUI(FirebaseUser user) {
-        GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+    public void GUpdateUI(final FirebaseUser user, boolean isNewUser) {
+        final GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (user != null && googleSignInAccount != null) {
-            String name = googleSignInAccount.getDisplayName();
-            String email = googleSignInAccount.getEmail();
-            String imageUrl = googleSignInAccount.getPhotoUrl().toString();
-            String id = user.getUid();
-            User user1 = new User(name, email, id, imageUrl);
+            if (isNewUser) {
+                String name = googleSignInAccount.getDisplayName();
+                String email = googleSignInAccount.getEmail();
+                String imageUrl = Objects.requireNonNull(googleSignInAccount.getPhotoUrl()).toString();
+                imageUrl = imageUrl.replace("=s96-c", "=s300-c");
+                String id = user.getUid();
+                User user1 = new User(name, email, id, imageUrl);
 
-            FirebaseDatabase.getInstance().getReference("Users")
-                    .child(id).setValue(user1)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            customProgressBar.dismissDialog();
-                            if (task.isSuccessful()) {
+                FirebaseDatabase.getInstance().getReference("Users")
+                        .child(id).setValue(user1)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                customProgressBar.dismissDialog();
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(MainActivity.this, startScreen.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    //error message
+                                }
+                            }
+                        });
+            } else {
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> mp = new HashMap<>();
+                        User user1 = dataSnapshot.getValue(User.class);
+                        if (user1.getImageUrl().isEmpty()) {
+                            String imageUrl = googleSignInAccount.getPhotoUrl().toString();
+                            imageUrl = imageUrl.replace("=s96-c", "=s300-c");
+                            mp.put("imageUrl", imageUrl);
+                        }
+                        if(user1.getEmail().isEmpty()) {
+                            mp.put("email", googleSignInAccount.getEmail());
+                        }
+                        databaseReference.updateChildren(mp).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                customProgressBar.dismissDialog();
                                 Intent intent = new Intent(MainActivity.this, startScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
-                            } else {
-                                //error message
                             }
-                        }
-                    });
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
         }
     }
 
