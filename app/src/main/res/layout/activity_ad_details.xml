@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.Ads.AdDetails">
 
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/adImages"
         android:layout_width="match_parent"
-        android:layout_height="280dp"></androidx.viewpager.widget.ViewPager>
+        android:layout_height="280dp" />
 
     <LinearLayout
+        android:id="@+id/sliderDots"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sliderDots"
-        android:layout_marginTop="5dp"
         android:layout_below="@id/adImages"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|center_horizontal">
-    </LinearLayout>
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal" />
 
     <TextView
+        android:id="@+id/adTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/adTitle"
-        android:paddingLeft="10dp"
-        android:textStyle="bold"
         android:layout_marginTop="4dp"
-        android:textSize="18sp"
+        android:paddingLeft="10dp"
         android:text="Hyundai i20 Active 2018 (Petrol)"
-        />
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,33 +40,34 @@
 
 
         <TextView
+            android:id="@+id/adPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/textPrimary"
-            android:id="@+id/adPrice"
             android:layout_marginTop="6dp"
-            android:paddingStart="12dp"/>
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_ads_black_24dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="12dp"
-        />
+            android:paddingStart="12dp"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/favourite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/ic_ads_black_24dp" />
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/adLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/quantum_grey"
-        android:id="@+id/adLocation"
-        android:textSize="16sp"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawablePadding="5dp"
         android:paddingLeft="8dp"
         android:text="New Road, Kathmandu"
-        android:drawableLeft="@drawable/location_icon"
-        android:drawablePadding="5dp"></TextView>
+        android:textColor="@color/quantum_grey"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,53 +77,54 @@
         android:padding="7dp">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
             android:id="@+id/send_message"
-            android:text="Send Message"
-            android:textColor="@color/colorPrimary"
-            android:background="@color/textPrimary"
-            android:layout_toLeftOf="@+id/call"
-            android:layout_marginRight="30dp"
-            />
-        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/call"
             android:layout_weight="0.5"
             android:background="@color/textPrimary"
+            android:text="Send Message"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
             android:id="@+id/call"
-            android:textColor="@color/colorPrimary"
-            android:text="Call"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="12dp"/>
+            android:layout_marginRight="12dp"
+            android:layout_weight="0.5"
+            android:background="@color/textPrimary"
+            android:text="Call"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
-    <com.google.android.material.tabs.TabLayout
 
-        android:id="@+id/specs_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:clickable="true"
-        android:focusable="true"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"
-        app:layout_scrollFlags="scroll"
-        app:tabIndicator="@color/textPrimary"
-        app:tabIndicatorColor="@color/textPrimary"
-        app:tabIndicatorHeight="2dp"
-        app:tabSelectedTextColor="@color/textPrimary"
-        app:tabTextColor="@color/quantum_grey" />
+        <com.google.android.material.tabs.TabLayout
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/specs_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_scrollFlags="scroll|enterAlways"/>
+            android:id="@+id/specs_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:clickable="true"
+            android:focusable="true"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            app:layout_scrollFlags="scroll"
+            app:tabIndicator="@color/textPrimary"
+            app:tabIndicatorColor="@color/textPrimary"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/textPrimary"
+            app:tabTextColor="@color/quantum_grey" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/specs_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways" />
     </LinearLayout>
 </LinearLayout>

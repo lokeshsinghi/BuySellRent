@@ -67,18 +67,17 @@
 
     <ImageView
         android:id="@+id/img_on"
-        android:layout_width="77dp"
-        android:layout_height="26dp"
+        android:layout_width="60dp"
+        android:layout_height="15dp"
         android:layout_below="@id/linear"
         android:layout_alignStart="@+id/user_image"
         android:layout_alignEnd="@+id/user_image"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="-63dp"
-        android:layout_marginTop="-30dp"
-        android:layout_marginEnd="-14dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="-40dp"
+        android:layout_marginTop="-22dp"
+        android:layout_marginEnd="-19dp"
         android:layout_toRightOf="@id/user_image"
-        android:src="@drawable/online"
-        android:visibility="gone" />
+        android:src="@drawable/online" />
 
 
 </RelativeLayout>
