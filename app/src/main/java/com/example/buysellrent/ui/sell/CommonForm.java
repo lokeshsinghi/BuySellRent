@@ -59,7 +59,7 @@ public class CommonForm extends AppCompatActivity {
     private EditText price_ad;
     private EditText phone_num;
     private String AdId;
-    private String address="unkown";
+    private String address="unknown";
     private int i;
     private TextView locationText;
     private int flag=0;
@@ -131,8 +131,10 @@ public class CommonForm extends AppCompatActivity {
                     Toast.makeText(CommonForm.this, "Please insert three images to continue", Toast.LENGTH_LONG).show();
                 } else if (address.equals("unknown")) {
                     Toast.makeText(CommonForm.this, "Please select the location", Toast.LENGTH_LONG).show();
-                } else if (phone_num.getText().toString().length() < 10) {
-                    Toast.makeText(CommonForm.this, "Please enter valid mobile number", Toast.LENGTH_LONG).show();
+                    locationText.setError("Please select the location !");
+                } else if (phone_num.getText().toString().equals("")||phone_num.getText().toString().length() < 10) {
+
+                    phone_num.setError("Please enter valid mobile number");
 
                 } else if (bundle.getString("category").equals("Cars")) {
 
@@ -193,7 +195,7 @@ public class CommonForm extends AppCompatActivity {
                     ((AdvertisementBikeModel)advertisementModel).setImgCount(imageList.size());
                     ((AdvertisementBikeModel)advertisementModel).setNumber(number);
                 }
-                else{
+                else if(flag>0){
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     String Uid = firebaseUser.getUid();
                     ((AdvertisementExtraModel)advertisementModel).setSellerId(Uid);
