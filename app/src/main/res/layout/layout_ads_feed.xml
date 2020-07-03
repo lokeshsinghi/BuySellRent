@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="15dp"
-    android:id="@+id/adLayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="1dp"
     android:orientation="vertical"
     android:padding="4dp"
-    android:layout_margin="1dp">
+    android:paddingBottom="15dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="130dp"
+        android:layout_centerInParent="true"
         app:cardCornerRadius="4dp"
-        app:cardMaxElevation="2dp"
         app:cardElevation="1dp"
-        android:layout_centerInParent="true">
+        app:cardMaxElevation="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="100"
             android:orientation="horizontal"
-            >
+            android:weightSum="100">
 
             <ImageView
+                android:id="@+id/adImage"
                 android:layout_width="0dp"
-                android:layout_weight="40"
                 android:layout_height="match_parent"
                 android:layout_marginTop="2dp"
-                android:padding="4dp"
                 android:layout_marginBottom="2dp"
-                android:id="@+id/adImage"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_weight="40"
+                android:padding="4dp"
+                android:scaleType="centerCrop"/>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:padding="10dp"
-                android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:id="@+id/adTitle"
-                android:layout_toRightOf="@id/adImage"
-                android:textColor="#000"
-                android:layout_marginTop="4dp"
-                android:textSize="14sp"
-                android:layout_marginBottom="2dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/adPrice"
-                android:textColor="@color/textPrimary"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/quantum_grey"
-                android:textSize="12dp"
-                android:id="@+id/adLocation"
-                android:text="New Road, Kathmandu"
-                android:drawableLeft="@drawable/location_icon"></TextView>
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/adTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_toRightOf="@id/adImage"
+                    android:text="Category"
+                    android:maxLines="2"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/adPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/adLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@drawable/location_icon"
+                    android:text="New Road, Kathmandu"
+                    android:maxLines="1"
+                    android:textColor="@color/quantum_grey"
+                    android:textSize="12dp"/>
+
+                <ImageView
+                    android:id="@+id/favourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_ads_black_24dp"
+                    android:layout_gravity="bottom|end" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

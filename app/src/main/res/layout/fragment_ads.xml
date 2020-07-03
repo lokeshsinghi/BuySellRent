@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.myAds.AdsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_ads"
+
+    <com.google.android.material.tabs.TabLayout
+
+        android:id="@+id/ads_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="100sp"
-        android:text="AD Fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="#FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        app:layout_scrollFlags="scroll"
+        app:tabIndicator="@color/textPrimary"
+        app:tabIndicatorColor="@color/textPrimary"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/textPrimary"
+        app:tabTextColor="@color/quantum_grey" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/ads_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|enterAlways"/>
+
+
+</LinearLayout>

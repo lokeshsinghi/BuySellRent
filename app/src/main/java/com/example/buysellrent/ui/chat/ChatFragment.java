@@ -84,5 +84,4 @@ public class ChatFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
-
 }
