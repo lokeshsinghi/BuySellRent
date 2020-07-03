@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -85,6 +87,34 @@ public class CommonForm extends AppCompatActivity {
         });
 
         price_ad=findViewById(R.id.price_ad);
+        price_ad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+                    price_ad.removeTextChangedListener(this);
+
+                    try {
+                        String originalString = s.toString();
+                        String formattedString = rupeeFormat(originalString.toString());
+                        price_ad.setText(formattedString);
+                        price_ad.setSelection(price_ad.getText().length());
+                    } catch (NumberFormatException nfe) {
+                        nfe.printStackTrace();
+                    }
+                    price_ad.addTextChangedListener(this);
+                }
+            }
+        });
         imageList=new ArrayList<Uri>();
         i=0;
         imageListFinal=new ArrayList<>();
@@ -117,8 +147,10 @@ public class CommonForm extends AppCompatActivity {
 
                 long price;
 
-                if (!price_ad.getText().toString().equals(""))
-                    price = Long.parseLong(price_ad.getText().toString());
+                if (!price_ad.getText().toString().equals("")) {
+                    String p = price_ad.getText().toString().replaceAll(",", "");
+                    price = Long.parseLong(p);
+                }
                 else
                     price = 0;
                 String number = "+977" + phone_num.getText().toString().trim();
@@ -346,6 +378,24 @@ public class CommonForm extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
         }
+
+    public static String rupeeFormat(String value){
+        value=value.replace(",","");
+        char lastDigit=value.charAt(value.length()-1);
+        String result = "";
+        int len = value.length()-1;
+        int nDigits = 0;
+        for (int i = len - 1; i >= 0; i--)
+        {
+            result = value.charAt(i) + result;
+            nDigits++;
+            if (((nDigits % 2) == 0) && (i > 0))
+            {
+                result = "," + result;
+            }
+        }
+        return (result+lastDigit);
+    }
 
     }
 

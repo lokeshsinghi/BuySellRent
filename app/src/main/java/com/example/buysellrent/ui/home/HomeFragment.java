@@ -315,15 +315,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println("Error"+databaseError);
             }
         });
-
     }
-
-
-
 }
